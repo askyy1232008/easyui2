@@ -1,0 +1,44 @@
+<!--此文件为tabs-content基础布局实现,请参考此文档结构添加新的碎片页面, wuwz@live.com-->
+<!--此处可以引入除基础js以外的其他js插件以及css样式文件-->
+<div class="easyui-tabs-content">
+
+	<div class="search-box easyui-panel" data-options="title:'查询条件'">
+		<input class="easyui-textbox" data-options="prompt:'Item ID'" />
+		<input class="easyui-textbox" data-options="prompt:'Product'" />
+		<input class="easyui-textbox" data-options="prompt:'List Price'" />
+
+		<a class="easyui-linkbutton"><i class="fa fa-search"></i> 查询</a>
+		<a class="easyui-linkbutton"><i class="fa fa-rotate-left"></i> 重置</a>
+		<a class="easyui-linkbutton">高级查询 <i class="fa fa-angle-double-down"></i></a>
+	</div>
+	<div class="datagrid-content">
+		<table class="easyui-datagrid-test"></table>
+	</div>
+
+	<script type="text/javascript">
+		$('.easyui-datagrid-test').datagrid({
+			title: '数据表格',
+			fit:true,
+			singleSelect:true,
+			collapsible:true,
+			url:'json/datagrid_data1.json',
+			method:'get',
+			fitColumns: true,
+			pagination: true,
+			columns: [ [
+				{field: 'itemid',title: 'Item ID',width:80},
+				{field: 'productid',title: 'Product',width:80},
+				{field: 'listprice',title: 'List Price',width:80},
+				{field: 'unitcost',title: 'Unit Cost',width:80},
+				{field: 'attr1',title: 'Attribute',width:80},
+				{field: 'status',title: 'Status',width:80}
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload'},
+				{text: '新增',iconCls:'icon-add'},
+				{text: '编辑',iconCls:'icon-edit'},
+				{text: '删除',iconCls:'icon-remove'},
+			]
+		});
+	</script>
+</div>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>index</title>
+	<link rel="stylesheet" href="plugins/easyui/themes/metro/easyui.css" />
+	<link rel="stylesheet" href="plugins/easyui/themes/icon.css" />
+	<link rel="stylesheet" href="plugins/easyui/style/metro-black/style.css" />
+	<link rel="stylesheet" href="plugins/webfont/css/font-awesome.min.css" />
+</head>
+
+<body class="easyui-layout" data-options="fit:true">
+	<div id="easyui-header" data-options="region:'north'" style="display: none;">
+		<div class="logo-content">
+			<!-- <span class="logo-icon fa fa-leaf"></span> -->
+			<img src="images/log.png" style="width:30px;height:30px;" />
+			<span class="project-name">行者运力平台</span>
+		</div>
+		<div class="quick-link-content">
+			<a class="quick-item easyui-linkbutton" plain="true" tree-target="json/truckManageTree.json">
+				<center class="top-fa-center"><i class="fa fa-truck fa-2x"></i></center>
+				<span class="quick-item-name">车辆管理</span>
+			</a>
+			<a class="quick-item easyui-linkbutton" plain="true" tree-target="json/userManageTree.json">
+				<center class="top-fa-center"><i class="fa fa-drivers-license-o fa-2x"></i></center>
+				<span class="quick-item-name">用户管理</span>
+			</a>
+			<!-- <a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree2.json">
+					<center class="top-fa-center"><i class="fa fa-desktop fa-2x"></i></center>
+					<span class="quick-item-name">控制面板</span>
+				</a>
+				<a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree3.json">
+					<center class="top-fa-center"><i class="fa fa-cog fa-2x"></i></center>
+					<span class="quick-item-name">系统配置</span>
+				</a>
+				<a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree4.json">
+					<center class="top-fa-center"><i class="fa fa-envelope-o fa-2x"></i></center>
+					<span class="quick-item-name">我的邮件</span>
+				</a>
+				 -->
+		</div>
+		<div class="user-info">
+			<a href="javascript:void(0)" class="easyui-menubutton" data-options="plain:true,menu:'#user-info-mm',iconCls:'icon-user-info'"><span id="username">admin</span></a>
+			<div id="user-info-mm" style="width:150px;">
+				<div>我的资料</div>
+				<div>更改密码</div>
+				<div class="menu-sep"></div>
+				<div id="loginOut" iconCls="icon-exit">安全退出</div>
+			</div>
+		</div>
+	</div>
+	<div id="easyui-nav" data-options="region:'west',split:true,title:'导航菜单',minWidth:150,maxWidth:200">
+		<ul id="left-menu-tree" class="easyui-tree"></ul>
+	</div>
+	<div data-options="region:'center',title:'',border:false">
+		<div id="easyui-main-tabs" class="easyui-tabs" data-options="fit:true">
+			<div title="预警" data-options="iconCls:'icon-home',href:'tabs/welcome.html'"></div>
+		</div>
+	</div>
+
+	<div id="easyui-footer" data-options="region:'south'" style="display: none;">
+		<span class="copyright-text">
+				Copyright &copy; <script type="text/javascript">document.write((new Date).getFullYear());</script> <a href="http://www.cnblogs.com/GaoAnLee">GaoAnLee</a> Allrights Reserved.
+			</span>
+	</div>
+	<script src="plugins/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="plugins/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="plugins/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="plugins/jquery.jdirk.min.js"></script>
+	<script type="text/javascript" src="plugins/jeasyui.ext.js"></script>
+	<script type="text/javascript" src="plugins/easyui.datagrid.editor.js"></script>
+	<script type="text/javascript" src="plugins/easyui.textbox.validatebox.js"></script>
+	<script type="text/javascript" src="plugins/datagrid-export.js"></script>
+	<script type="text/javascript" src="script/params.js"></script>
+	<script type="text/javascript" src="script/common.js"></script>
+	<script type="text/javascript" src="script/index.js">	</script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=gzlOFYUgoWIhzy4NpNF4i1nvG7F1nKTm"></script>
+</body>
+
+</html>

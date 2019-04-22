@@ -1,0 +1,223 @@
+<!--此文件为tabs-content基础布局实现,请参考此文档结构添加新的碎片页面, wuwz@live.com-->
+<!--此处可以引入除基础js以外的其他js插件以及css样式文件-->
+<div class="easyui-tabs-content">
+  <div class="search-box easyui-panel" data-options="title:'查询条件'">
+      <input class="easyui-textbox" id="licensePlate6" name="licensePlate6" data-options="prompt:'主车牌'" />
+      <input class="easyui-textbox" id="financecompany" name="financecompany" data-options="prompt:'金融公司'" />
+      <input class="easyui-textbox" id="loanpeople" name="loanpeople" data-options="prompt:'贷款人'" />
+      <a class="easyui-linkbutton" href="javascript:void(0)" onclick="searchLoan()"><i class="fa fa-search"></i> 查询</a>
+      <a class="easyui-linkbutton" href="javascript:void(0)" onclick="resetLoan()"><i class="fa fa-rotate-left"></i> 重置</a>
+  </div>
+	<div class="datagrid-content">
+		<table class="easyui-datagrid-loan">
+      <thead data-options="frozen:true">
+        <tr>
+          <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+        </tr>
+      </thead>
+		</table>
+	</div>
+  <div id="loadloanlog-dialog" class="easyui-dialog" style="width:400px;padding:10px;" data-options="iconCls:'icon-file',closed:true">
+      <form id="loadloanlog-form" method="post">
+        <table>
+          <tr>
+            <td align="right">还款总额(元):</td>
+            <td>
+              <input type="text" name="totalrepayment" id="totalrepayment" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'还款总额(元)'" />
+            </td>
+          </tr>
+          <tr>
+            <td align="right">当月已还(元):</td>
+            <td>
+              <input type="text" name="thatmonthhasreturned" id="thatmonthhasreturned" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'当月已还(元)'" />
+            </td>
+          </tr>
+          <tr>
+            <td align="right">还款日期:</td>
+            <td>
+              <input type="text" name="payeddate" id="payeddate" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'还款日期'" />
+            </td>
+          </tr>
+          <tr>
+            <td align="right">累计还款(元):</td>
+            <td>
+              <input type="text" name="surplusshouldalsobereturned" id="surplusshouldalsobereturned" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'累计还款(元)'" />
+            </td>
+          </tr>
+          <tr>
+            <td align="right">剩余应还(元):</td>
+            <td>
+              <input type="text" name="accumulatedrepayment" id="accumulatedrepayment" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'剩余应还(元)'" />
+            </td>
+          </tr>
+        </table>
+      </form>
+  </div>
+	<script type="text/javascript">
+		$('.easyui-datagrid-loan').datagrid({
+			title: '金融还款',
+			fit:true,
+			singleSelect:true,
+			collapsible:true,
+			url:host + '/ssm/loan/loanList',
+			method:'get',
+			fitColumns: true,
+			pagination: true,
+      pageList: [9999],
+      pageSize:9999,
+			columns: [ [
+				{field: 'id',title: 'id',width:80,hidden:true},
+				{field: 'truckid',title: 'truckid',width:80,hidden:true},
+				{field: 'vin',title: '贷款车辆(车架号)',width:80},
+        {field: 'loanpeople',title: '贷款人',width:80},
+				{field: 'financecompany',title: '金融公司',width:80},
+				{field: 'loandate',title: '放款日期',width:80,formatter:function(value){return dateboxFormatter(value);}},
+				{field: 'loanmoney',title: '贷款金额(元)',width:80},
+        {field: 'moneyrate',title: '利率',width:80},
+        {field: 'grossinterest',title: '总利息(元)',width:80},
+        {field: 'loanservicecharge',title: '贷款手续费(元)',width:80},
+        {field: 'loanservicechargemark',title: '贷款手续费备注',width:80},
+        {field: 'othercost',title: '其他费用(元)',width:80},
+        {field: 'othercostmark',title: '其他费用备注',width:80},
+        {field: 'bond',title: '保证金(元)',width:80},
+        {field: 'actual',title: '实际到账金额(元)',width:80},
+        {field: 'monthlyrepayment',title: '每月还款(元)',width:80},
+        {field: 'trem',title: '还款期限(月)',width:80}
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload',handler:function(){$('.easyui-datagrid-loan').datagrid('reload');}},
+				// {text: '新增',iconCls:'icon-add'},
+				// {text: '编辑',iconCls:'icon-edit'},
+				{text: '删除',iconCls:'icon-remove',handler:function(){deleteLoan();}},
+        {text: '贷款情况查询',iconCls:'icon-file',handler:function(){
+           sreachsituation();
+        }}
+			]
+		});
+
+    function resetLoan(){
+      $("#licensePlate6").textbox('clear');
+      $("#financecompany").textbox('clear');
+      $("#loanpeople").textbox('clear');
+    }
+
+    function searchLoan(){
+      var licensePlate = $("#licensePlate6").textbox("getValue");
+      var financecompany = $("#financecompany").textbox("getValue");
+      var loanpeople = $("#loanpeople").textbox("getValue");
+      var options = $(".easyui-datagrid-loan" ).datagrid("getPager").data("pagination" ).options;
+      var page = options.pageNumber;
+      var rows = options.pageSize;
+      $.ajax({
+        url:host+'/ssm/loan/loanList',
+        type:'get',
+        cache:false,
+        async:false,
+        data:{
+          licensePlate:licensePlate,
+          financecompany:financecompany,
+          loanpeople:loanpeople,
+          page:page,
+          rows:rows
+        },
+        success:function(data){
+          console.info("searchLoan success.");
+          $('.easyui-datagrid-loan').datagrid('loadData',data);
+        },
+        error:function(xhr, ajaxOptions, thrownError){
+          console.info("searchLoan fall.");
+        }
+      });
+    }
+
+    function deleteLoan(){
+      var item = $('.easyui-datagrid-loan').datagrid('getSelected');
+      if(!item){
+        $.messager.alert('信息提示', '请先选中一行.', 'error');
+        return;
+      }
+      if(getLevel() > 3){
+        $.messager.alert('信息提示', '您没有权限，请联系管理员.', 'info');
+        return;
+      }
+      $.messager.confirm('提示', '是否要删除?', function(b){
+        if(b){
+          $.ajax({
+            url:host+'/ssm/loan/deleteLoan',
+            type:'get',
+            cache:false,
+            async:false,
+            data:{
+              id:item.id
+            },
+            success:function(data){
+              if(data == 1){
+                console.info("deleteLoan success.");
+                $('.easyui-datagrid-loan').datagrid('reload');
+              }else{
+                $.messager.alert('信息提示', '删除失败.', 'error');
+              }
+            },
+            error:function(xhr, ajaxOptions, thrownError){
+              console.info("deleteLoan fall.");
+            }
+          });
+        }else{
+          return;
+        }
+      });
+    }
+
+    function sreachsituation(){
+      var item = $('.easyui-datagrid-loan').datagrid('getSelected');
+      if(!item){
+        $.messager.alert('信息提示', '请先选中一行.', 'error');
+        return;
+      }
+      if(getLevel() > 3){
+        $.messager.alert('信息提示', '您没有权限，请联系管理员.', 'info');
+        return;
+      }
+      loadLoanLog(item.truckid);
+    }
+
+    function loadLoanLog(truckid){
+      $.ajax({
+        url:host+'/ssm/loan/loadLoanLog',
+        type: "get",
+        cache: false,
+        async: false,
+        data: {
+          truckid:truckid
+        },
+        success: function(data) {
+            if (data.code == 20000) {
+              console.log(data);
+              $('#loadloanlog-form').form('clear');
+              $('#loadloanlog-form').form('load',data.result.result);
+              $('#payeddate').textbox('setValue',dateboxFormatter(data.result.result.payeddate));
+              $('#loadloanlog-dialog').dialog({
+                  closed: false,
+                  iconCls: 'icon-file',
+                  modal: true,
+                  title: "还款情况",
+                  buttons: [{
+                      text: '关闭',
+                      iconCls: 'icon-cancel',
+                      handler: function() {
+                          $('#loadloanlog-dialog').dialog('close');
+                      }
+                  }]
+              });
+            }else{
+              $.messager.alert('信息提示', data.result.result, 'error');
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            //On error do this
+            console.info("loadLoanLog error.");
+        }
+      });
+    }
+	</script>
+</div>

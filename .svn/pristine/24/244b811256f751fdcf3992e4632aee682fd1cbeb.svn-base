@@ -1,0 +1,96 @@
+<!--此文件为tabs-content基础布局实现,请参考此文档结构添加新的碎片页面, wuwz@live.com-->
+<!--此处可以引入除基础js以外的其他js插件以及css样式文件-->
+<div class="easyui-tabs-content">
+
+	<div class="search-box easyui-panel" data-options="title:'查询条件'">
+		<input class="easyui-textbox" id="licenseplate4" name="licenseplate4" data-options="prompt:'主车牌'" />
+		<input class="easyui-textbox" id="trailerlicensepate4" name="trailerlicensepate4" data-options="prompt:'挂车牌'" />
+		<a class="easyui-linkbutton" href="javascript:void(0)" onclick="searchNotForShow()"><i class="fa fa-search"></i> 查询</a>
+		<a class="easyui-linkbutton" href="javascript:void(0)" onclick="resetNotForShow()"><i class="fa fa-rotate-left"></i> 重置</a>
+	</div>
+	<div class="datagrid-content">
+		<table class="easyui-datagrid-notforshow">
+			<thead data-options="frozen:true">
+        <tr>
+          <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+        </tr>
+      </thead>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+		$('.easyui-datagrid-notforshow').datagrid({
+			iconCls:'icon-file',
+			title: '结算预算(如果本月已经进行结算,那么此结果将不准确,请在结算前进行导出！！)',
+			fit:true,
+			singleSelect:true,
+			rownumbers:true,
+			collapsible:true,
+			url:host+'/ssm/payLog/payLogListForNotShow',
+			method:'get',
+			fitColumns: true,
+			pagination: true,
+			columns: [ [
+				{field: 'licensePlate',title: '主车牌',width:80},
+				{field: 'trailerLicensePate',title: '挂车牌',width:80},
+				{field: 'previous',title: '上月欠款(元)',width:80,
+				formatter:function(value){
+						return keepTwoDecimal(value);
+				}},
+				{field: 'zhinajin',title: '滞纳金预计算(元)',width:80,
+				formatter:function(value){
+						return keepTwoDecimal(value);
+				}},
+				{field: 'allNeedPay',title: '本月应付(元)',width:80},
+				{field: 'payed',title: '本月已付(元)',width:80},
+				{field: 'needPay',title: '本月还需付(元)',width:80}
+			] ],
+			toolbar:[
+				{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-notforshow').datagrid('reload'); }},
+				{text: '导出Excel',iconCls:'icon-file',handler:function(){
+					// var data = JSON.stringify($('.easyui-datagrid-notforshow').datagrid('getData').rows);
+					// if (data == '')
+					// 	return;
+					// JSONToCSVConvertor(data, "easyui-datagrid-notforshow-Download("+getNowDate()+")", true);
+					$('.easyui-datagrid-notforshow').datagrid('toExcel',{
+						filename:getNowDate()+'.xls',
+						rows:$('.easyui-datagrid-notforshow').datagrid('getData').rows,
+						worksheet: 'Worksheet'
+					});
+				}}
+			]
+		});
+
+		function resetNotForShow(){
+			$("#licenseplate4").textbox('clear');
+      $("#trailerlicensepate4").textbox('clear');
+		}
+
+		function searchNotForShow(){
+			var licensePlate = $("#licenseplate4").textbox("getValue");
+      var trailerLicensePate = $("#trailerlicensepate4").textbox("getValue");
+      var options = $(".easyui-datagrid-notforshow" ).datagrid("getPager").data("pagination" ).options;
+      var page = options.pageNumber;
+      var rows = options.pageSize;
+      $.ajax({
+        url:host+'/ssm/payLog/payLogListForNotShow',
+        type:'get',
+        cache:false,
+        async:false,
+        data:{
+          licensePlate:licensePlate,
+          trailerLicensePate:trailerLicensePate,
+          page:page,
+          rows:rows
+        },
+        success:function(data){
+          console.info("searchNotForShow success.");
+          $('.easyui-datagrid-notforshow').datagrid('loadData',data);
+        },
+        error:function(xhr, ajaxOptions, thrownError){
+          console.info("searchNotForShow fall.");
+        }
+      });
+		}
+	</script>
+</div>

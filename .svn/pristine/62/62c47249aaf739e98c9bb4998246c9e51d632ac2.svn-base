@@ -1,0 +1,449 @@
+function repay(){
+  if(getLevel() > 3){
+    $.messager.alert('信息提示', '您没有权限，请联系管理员.', 'info');
+    return;
+  }
+  if (checkSelectDatagrid()) {
+      return;
+  }
+  var item = $('#dg').datagrid('getSelected');
+  $('#repay-form').form('clear');
+  $('#monthlypayed').textbox('setValue',0);
+  var repayobj = getthistrucklast(item.truckid);
+  $('#repay-dialog').dialog({
+      closed: false,
+      iconCls: 'icon-add',
+      modal: true,
+      title: "车辆 "+ item.licenseplate + "  " + item.trailerlicensepate + " 车主还款",
+      buttons: [{
+        text: '计算',
+        iconCls: 'icon-file',
+        handler: function() {
+          stts(repayobj);
+        }
+      },{
+          text: '确定',
+          iconCls: 'icon-ok',
+          handler: function() {
+            addRepay(item.truckid);
+          }
+      }, {
+          text: '取消',
+          iconCls: 'icon-cancel',
+          handler: function() {
+              $('#repay-dialog').dialog('close');
+          }
+      }]
+  });
+}
+
+function repaylist(){
+  if (checkSelectDatagrid()) {
+      return;
+  }
+  var item = $('#dg').datagrid('getSelected');
+  $('#repaylist-form').form('clear');
+  listrepays(item);
+  $('#repaylist-dialog').dialog({
+      closed: false,
+      iconCls: 'icon-file',
+      modal: true,
+      title: "车辆 "+ item.licenseplate + "  " + item.trailerlicensepate + " 还款记录",
+      buttons: [{
+          text: '取消',
+          iconCls: 'icon-cancel',
+          handler: function() {
+              $('#repaylist-dialog').dialog('close');
+          }
+      }]
+  });
+}
+
+function repaylistallopen(){
+  $('#repaylistallparams-form').form('clear');
+  $('#repaylistallparams-dialog').dialog({
+      closed: false,
+      iconCls: 'icon-file',
+      modal: true,
+      title: "预计算参数",
+      buttons: [{
+          text: '确定',
+          iconCls: 'icon-ok',
+          handler: function() {
+            repaylistall();
+          }
+      }, {
+          text: '取消',
+          iconCls: 'icon-cancel',
+          handler: function() {
+              $('#repaylistallparams-dialog').dialog('close');
+          }
+      }]
+  });
+}
+
+function repaylistall(){
+  $('#repaylistallparams-dialog').dialog('close');
+  $('#repaylistall-form').form('clear');
+  listallrepays();
+  $('#repaylistall-dialog').dialog({
+      closed: false,
+      iconCls: 'icon-file',
+      modal: true,
+      title: "预计算结果",
+      buttons: [{
+          text: '取消',
+          iconCls: 'icon-cancel',
+          handler: function() {
+              $('#repaylistall-dialog').dialog('close');
+          }
+      }]
+  });
+}
+
+function listallrepays(){
+  var days = $('#paramdays').textbox('getValue');
+  var rate = $('#paramrate').textbox('getValue');
+  $('.easyui-datagrid-repaylistall').datagrid({
+    title: '预结算结果',
+    iconCls:'icon-file',
+    fit:true,
+    pageList: [9999],
+    pageSize:9999,
+    rownumbers:true,
+    singleSelect:true,
+    collapsible:true,
+    url:host + '/ssm/repay/gettruckall',
+    method:'get',
+    fitColumns: true,
+    pagination: true,
+    queryParams: {
+  		days : days,
+      rate : rate
+	  },
+    columns: [[
+      {field: 'truckid',title: '车辆编号',width:80,hidden:true},
+      {field: 'licenseplate',title: '主车牌',width:80},
+      {field: 'trailerlicensepate',title: '挂车牌',width:80},
+      {field: 'totalrepay',title: '总欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }
+      },
+      {field: 'monthlyrepay',title: '本月应还(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'monthlypayed',title: '本月已还(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'remainingarrears',title: '剩余欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'days',title: '逾期天数(天)',width:80},
+      {field: 'latefee',title: '本次滞纳金(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'monthlyneedpay',title: '当月合计欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'totalrepayafterpayed',title: '还款后总欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'voucherdate',title: '合同到期日期',width:80,
+        formatter:function(date){
+          return dateboxFormatter(date);
+        },
+        styler:function(value,row,index){
+          var days = getDays(getNowDate(),dateboxFormatter(row.voucherdate));
+          if(days<=30 && days>0){
+             return 'background-color:#ffee00;color:red;';
+          }
+          if(days<=0){
+            return 'background-color:red;color:#ffffff;';
+          }
+        }
+      },
+      {field: 'total',title: '总价(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'remarks',title: '备注',width:80},
+      {field: 'months',title: '周期(月)',width:50},
+      {field: 'monthlyrent',title: '月租(元)',width:50,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }}
+    ]],
+    toolbar: [
+      {text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-repaylistall').datagrid('reload'); }},
+      {text: '导出Excel',iconCls:'icon-file',handler:function(){
+        // var data = JSON.stringify($('.easyui-datagrid-notforshow').datagrid('getData').rows);
+        // if (data == '')
+        // 	return;
+        // JSONToCSVConvertor(data, "easyui-datagrid-notforshow-Download("+getNowDate()+")", true);
+        $('.easyui-datagrid-repaylistall').datagrid('toExcel',{
+          filename:getNowDate()+'预计算.xls',
+          rows:$('.easyui-datagrid-repaylistall').datagrid('getData').rows,
+          worksheet: 'Worksheet'
+        });
+      }}
+    ]
+  });
+}
+
+function listrepays(item){
+  $('.easyui-datagrid-repaylist').datagrid({
+    title: '还款记录',
+    iconCls:'icon-file',
+    fit:true,
+    pageList: [9999],
+    pageSize:9999,
+    rownumbers:true,
+    singleSelect:true,
+    collapsible:true,
+    url:host + '/ssm/repay/getthistruckall',
+    method:'get',
+    fitColumns: true,
+    pagination: true,
+    queryParams: {
+  		truckid : item.truckid
+	  },
+    columns: [[
+      {field: 'id',title: '还款记录编号',width:80,hidden:true},
+      {field: 'truckid',title: '车辆编号',width:80,hidden:true},
+      {field: 'paydate',title: '还款日期',width:80,
+        formatter:function(date){
+          return dateboxFormatter(date);
+        }
+      },
+      {field: 'totalrepay',title: '总欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'monthlyrepay',title: '本月应还(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'nowpay',title: '本次还款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'monthlypayed',title: '本月已还(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'remainingarrears',title: '剩余欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'days',title: '逾期天数(天)',width:80},
+      {field: 'latefee',title: '本次滞纳金(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'monthlyneedpay',title: '当月合计欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'totalrepayafterpayed',title: '还款后总欠款(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'voucherdate',title: '合同到期日期',width:80,
+        formatter:function(date){
+          return dateboxFormatter(date);
+        },
+        styler:function(value,row,index){
+          var days = getDays(getNowDate(),dateboxFormatter(row.voucherdate));
+          if(days<=30 && days>0){
+             return 'background-color:#ffee00;color:red;';
+          }
+          if(days<=0){
+            return 'background-color:red;color:#ffffff;';
+          }
+        }
+      },
+      {field: 'total',title: '总价(元)',width:80,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }},
+      {field: 'remarks',title: '备注',width:80},
+      {field: 'months',title: '周期(月)',width:50},
+      {field: 'monthlyrent',title: '月租(元)',width:50,
+        formatter:function(value){
+          return parseFloat(value).toFixed();
+        }}
+    ]],
+    toolbar: [
+      {text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-repaylist').datagrid('reload'); }},
+      {text: '导出Excel',iconCls:'icon-file',handler:function(){
+        // var data = JSON.stringify($('.easyui-datagrid-notforshow').datagrid('getData').rows);
+        // if (data == '')
+        // 	return;
+        // JSONToCSVConvertor(data, "easyui-datagrid-notforshow-Download("+getNowDate()+")", true);
+        $('.easyui-datagrid-repaylist').datagrid('toExcel',{
+          filename:getNowDate()+ "-" + item.licenseplate + "-" + item.trailerlicensepate + "-" + '还款记录.xls',
+          rows:$('.easyui-datagrid-repaylist').datagrid('getData').rows,
+          worksheet: 'Worksheet'
+        });
+      }},
+      {text: '删除还款记录',iconCls:'icon-remove',handler:function(){
+          $.messager.confirm('提示', '是否要删除?', function(b){
+              if(b){
+                var item = $('.easyui-datagrid-repaylist').datagrid('getSelected');
+                if(!item){
+                  $.messager.alert('信息提示', '请选中一行....', 'info');
+                  return;
+                }
+                $.ajax({
+                  url:host+'/ssm/repay/deleteone',
+                  type: "post",
+                  cache: false,
+                  async: false,
+                  data:{
+                    id:item.id,
+                    truckid:item.truckid
+                  },
+                  // data: JSON.stringify(data),
+                  // contentType: 'application/json',
+                  success: function(d) {
+                    if(d.code == 20000){
+                      $.messager.alert('信息提示', d.result.r, 'info');
+                      $('.easyui-datagrid-repaylist').datagrid('reload');
+                    }else{
+                      $.messager.alert('信息提示', d.result.r, 'error');
+                    }
+                  },
+                  error: function(xhr, ajaxOptions, thrownError) {
+                      //On error do this
+                      console.info("deleteone error.");
+                  }
+                });
+          }else{
+            return;
+          }
+      });
+    }}
+    ]
+  });
+}
+
+function addRepay(truckid){
+  var data = {};
+  var t = $('#repay-form').serializeArray();
+  $.each(t, function () {
+      data[this.name] = this.value;
+  });
+  data.truckid = truckid;
+  $.ajax({
+    url:host+'/ssm/repay/add',
+    type: "post",
+    cache: false,
+    async: false,
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    success: function(d) {
+      if(d == 20000){
+        $.messager.alert('信息提示', '还款成功!', 'info');
+        $('#repay-dialog').dialog('close');
+      }else{
+        $.messager.alert('信息提示', '还款失败!', 'error');
+      }
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+        //On error do this
+        console.info("addRepay error.");
+    }
+  });
+}
+
+
+function getthistrucklast(truckid){
+  var repayobj = null;
+  $.ajax({
+    url:host+'/ssm/repay/getthistrucklast',
+    type: "get",
+    cache: false,
+    async: false,
+    // data: JSON.stringify(data),
+    // contentType: 'application/json',
+    data:{truckid:truckid},
+    success: function(d) {
+      repayobj = d.result.obj;
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+        //On error do this
+        console.info("getthistrucklast error.");
+    }
+  });
+  if(repayobj != null){
+    $('#total').textbox('setValue',repayobj.total);
+    $('#totalrepay').textbox('setValue',parseFloat(repayobj.totalrepayafterpayed));
+    $('#months').textbox('setValue',repayobj.months);
+    $('#monthlyrent').textbox('setValue',repayobj.monthlyrent);
+  }
+  return repayobj;
+}
+
+function stts(repayobj){
+  if(repayobj !=null){
+    var olddate = dateboxFormatter(repayobj.paydate);
+    var nowdate = $('#paydate').datebox('getValue');
+    var oldMonth = olddate.split('-')[1];
+    var nowMonth = nowdate.split('-')[1];
+    if(oldMonth == nowMonth){
+      $('#monthlyrepay').textbox('setValue',(parseFloat(repayobj.monthlyrepay) +parseFloat(repayobj.latefee)).toFixed());
+      $('#monthlypayed').textbox('setValue',(parseFloat(repayobj.monthlypayed) + parseFloat(repayobj.nowpay)).toFixed());
+    }else{
+      var months = datemonth(olddate,nowdate);
+      if(months<0){
+        $.messager.alert('信息提示', '本次还款日期比最后一次还款日期早一个月份.', 'error');
+        return;
+      }
+      $('#monthlyrepay').textbox('setValue',(parseFloat(repayobj.monthlyneedpay) + (parseFloat(repayobj.monthlyrent))*months).toFixed());
+      $('#monthlypayed').textbox('setValue',0);
+    }
+    $('#voucherdate').datebox('setValue',repayobj.voucherdate);
+    $('#remarks').textbox('setValue',repayobj.remarks);
+  }
+  var interestrate = $('#interestrate').textbox('getValue'); //利率
+  var total = $('#total').textbox('getValue'); //总价
+  var months = $('#months').textbox('getValue'); //周期
+  $('#monthlyrent').textbox('setValue',(parseFloat(total)/parseFloat(months)).toFixed());
+  var totalrepay = $('#totalrepay').textbox('getValue');//总欠款
+  var nowpay = $('#nowpay').textbox('getValue');//本次还款
+  var monthlyrepay = $('#monthlyrepay').textbox('getValue');//本月应还
+  var monthlypayed = $('#monthlypayed').textbox('getValue'); //本月已还
+  var monthlyrent = $('#monthlyrent').textbox('getValue'); //月租
+  var remainingarrears = (parseFloat(monthlyrepay) - parseFloat(monthlypayed) - parseFloat(nowpay)).toFixed(); //剩余欠款
+  // if(repayobj !=null){
+  //   remainingarrears = remainingarrears + parseFloat(repayobj.latefee);
+  // }
+  var days = $('#days').textbox('getValue'); //逾期天数
+  var latefee = 0;
+  var startday = 5;
+  var payday = parseInt(nowdate.split('-')[2]);
+  latefee = ((parseFloat(monthlyrepay)-parseFloat(monthlyrent)-parseFloat(monthlypayed)) * parseFloat(days) * parseFloat(interestrate)).toFixed();
+  if(0<payday && payday<startday){
+    latefee = ((parseFloat(monthlyrepay)-2*parseFloat(monthlyrent)-parseFloat(monthlypayed)) * parseFloat(days) * parseFloat(interestrate)).toFixed();
+  }
+  if(latefee<0){
+    latefee = 0;
+  }
+  // if((parseFloat(monthlyrepay) - parseFloat(nowpay) - parseFloat(monthlyrent) - parseFloat(monthlypayed))>0){
+  //   latefee = ((parseFloat(monthlyrepay) - parseFloat(nowpay) - parseFloat(monthlyrent)- parseFloat(monthlypayed)) * parseFloat(days) * parseFloat(interestrate)).toFixed();
+  // }
+  $('#latefee').textbox('setValue',latefee);
+  var monthlyneedpay = (parseFloat(remainingarrears) + parseFloat(latefee)).toFixed(); //当月合计欠款
+  $('#monthlyneedpay').textbox('setValue',monthlyneedpay);
+  $('#remainingarrears').textbox('setValue',remainingarrears);
+  var totalrepayafterpayed = (parseFloat(totalrepay) + parseFloat(latefee) - parseFloat(nowpay)).toFixed();//还款后总欠款
+  $('#totalrepayafterpayed').textbox('setValue',totalrepayafterpayed);
+
+}

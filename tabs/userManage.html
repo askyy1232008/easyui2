@@ -1,0 +1,262 @@
+<div class="easyui-tabs-content">
+    <div class="datagrid-content">
+        <table class="easyui-datagrid-user" style="height:100%;">
+          <thead data-options="frozen:true">
+            <tr>
+              <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+            </tr>
+          </thead>
+        </table>
+    </div>
+    <div id="user-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:300px; padding:10px;">
+        <form id="user-form" method="post">
+            <table>
+                <tr>
+                    <td width="60" align="right">用户名:</td>
+                    <td><input type="text" name="userName" class="easyui-textbox" data-options="prompt:'用户名'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">密 码:</td>
+                    <td><input type="text" name="password" class="easyui-passwordbox" data-options="prompt:'密码'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">level:</td>
+                    <td><input type="text" name="age" class="easyui-numberspinner" value="0" data-options="increment:1,prompt:'数值越低权限越高'" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <script type="text/javascript">
+        //表格数据
+        $('.easyui-datagrid-user').datagrid({
+            title: '用户列表',
+            iconCls: 'icon-edit',
+            rownumbers:true,
+            fit: true,
+            striped: true,
+            autoRowHeight: false,
+            singleSelect: true,
+            url: host + "/ssm/user/userList",
+            method: 'get',
+            fitColumns: true,
+            pagination: true,
+            columns: [
+                [/*{
+                    field: 'id',
+                    title: 'id',
+                    width: 80
+                },*/ {
+                    field: 'userName',
+                    title: '用户名称',
+                    width: 80
+                }, {
+                    field: 'age',
+                    title: 'level',
+                    width: 80,
+                    formatter: function(value, row, index) {
+                        switch (value) {
+                            case 1:
+                                return '超级管理员'
+                                break;
+                            case 2:
+                                return '子管理员'
+                                break;
+                            case 3:
+                                return '业务员a'
+                                break;
+                            case 4:
+                                return '业务员b'
+                                break;
+                            default:
+                                return '未知'
+                        }
+                    }
+                }]
+            ],
+            toolbar: [{
+                text: '重载',
+                iconCls: 'icon-reload',
+                handler: function() {
+                    $('.easyui-datagrid-user').datagrid('reload');
+                }
+            }, {
+                text: '新增',
+                iconCls: 'icon-add',
+                handler: function() {
+                    openAdd();
+                }
+            }, {
+                text: '编辑',
+                iconCls: 'icon-edit',
+                handler: function() {
+                    openEdit();
+                }
+            }, {
+                text: '删除',
+                iconCls: 'icon-remove',
+                handler: function() {
+                    remove();
+                }
+            }, ]
+        });
+        /**
+         * Name 打开新增窗口
+         */
+        function openAdd() {
+            $('#user-form').form('clear');
+            $('#user-dialog').dialog({
+                closed: false,
+                iconCls: 'icon-add',
+                modal: true,
+                title: "新增",
+                buttons: [{
+                    text: '确定',
+                    iconCls: 'icon-ok',
+                    handler: function() {
+                        add();
+                    }
+                }, {
+                    text: '取消',
+                    iconCls: 'icon-cancel',
+                    handler: function() {
+                        $('#user-dialog').dialog('close');
+                    }
+                }]
+            });
+        }
+        /**
+         *  Name 新增
+         **/
+        function add() {
+            $.ajax({
+                url: host + '/ssm/user/addUser',
+                type: "post",
+                cache: false,
+                async: true,
+                data: {
+                    'userName': $("input[name='userName']").val(),
+                    'password': $("input[name='password']").val(),
+                    'age': $("input[name='age']").val()
+                },
+                success: function(data) {
+                    if (data == 0) {
+                        $.messager.alert('信息提示', '提交失败,是否已存在该用户名！', 'error');
+                    } else {
+                        $('#user-dialog').dialog('close');
+                        $('.easyui-datagrid-user').datagrid('reload');
+                        $.messager.alert('信息提示', '提交成功！', 'info');
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    //On error do this
+                    console.info("addUser error.");
+                }
+            });
+        }
+        /**
+         * Name 打开修改窗口
+         */
+        function openEdit() {
+            $('#user-form').form('clear');
+            var item = $('.easyui-datagrid-user').datagrid('getSelected');
+            if (!item) {
+                $.messager.alert('信息提示', '请先选中一条记录！', 'error');
+            } else {
+
+                $('#user-form').form('load', {
+                    userName: item.userName,
+                    password: item.password,
+                    age: item.age
+                });
+
+                $('#user-dialog').dialog({
+                    closed: false,
+                    iconCls: 'icon-update',
+                    modal: true,
+                    title: "修改",
+                    buttons: [{
+                        text: '确定',
+                        iconCls: 'icon-ok',
+                        handler: function() {
+                            edit(item.id);
+                        }
+                    }, {
+                        text: '取消',
+                        iconCls: 'icon-cancel',
+                        handler: function() {
+                            $('#user-dialog').dialog('close');
+                        }
+                    }]
+                });
+            }
+        }
+        /**
+         *  Name  修改
+         **/
+        function edit(id) {
+            $.ajax({
+                url: host + '/ssm/user/updateUser',
+                type: "post",
+                cache: false,
+                async: true,
+                data: {
+                    'id': id,
+                    'userName': $("input[name='userName']").val(),
+                    'password': $("input[name='password']").val(),
+                    'age': $("input[name='age']").val()
+                },
+                success: function(data) {
+                    if (data == 0) {
+                        $.messager.alert('信息提示', '提交失败！', 'error');
+                    } else {
+                        $('#user-dialog').dialog('close');
+                        $('.easyui-datagrid-user').datagrid('reload');
+                        $.messager.alert('信息提示', '提交成功！', 'info');
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    //On error do this
+                    console.info("updateUser error.");
+                }
+            });
+        }
+        /**
+         *  Name  删除
+         **/
+        function remove() {
+            var item = $('.easyui-datagrid-user').datagrid('getSelected');
+            if (!item) {
+                $.messager.alert('信息提示', '请先选中一条记录！', 'error');
+            } else {
+                $.ajax({
+                    url: host + '/ssm/user/removeUser',
+                    type: "post",
+                    cache: false,
+                    async: true,
+                    data: {
+                        'id': item.id
+                    },
+                    success: function(data) {
+                        if (data == 0) {
+                            $.messager.alert('信息提示', '提交失败！', 'error');
+                        } else {
+                            $('#user-dialog').dialog('close');
+                            $('.easyui-datagrid-user').datagrid('reload');
+                            $.messager.alert('信息提示', '提交成功！', 'info');
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        //On error do this
+                        console.info("removeUser error.");
+                    }
+                });
+            }
+        }
+        /**
+         *  Name  删除
+         **/
+        function levelFormatter(){
+
+        }
+    </script>
+</div>

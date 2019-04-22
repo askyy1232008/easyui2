@@ -1,0 +1,249 @@
+<!--此文件为tabs-content基础布局实现,请参考此文档结构添加新的碎片页面, wuwz@live.com-->
+<!--此处可以引入除基础js以外的其他js插件以及css样式文件-->
+<div class="easyui-tabs-content">
+	<div class="search-box easyui-panel" data-options="title:'查询条件'">
+		<input class="easyui-textbox" id="licenseplate1" name="licenseplate1" data-options="prompt:'主车牌'" />
+		<input class="easyui-textbox" id="trailerlicensepate1" name="trailerlicensepate1" data-options="prompt:'挂车牌'" />
+		<a class="easyui-linkbutton" href="javascript:void(0)" onclick="searchVoucher()"><i class="fa fa-search"></i> 查询</a>
+		<a class="easyui-linkbutton" href="javascript:void(0)" onclick="resetVoucher()"><i class="fa fa-rotate-left"></i> 重置</a>
+	</div>
+	<div class="datagrid-content">
+		<table class="easyui-datagrid-voucher">
+      <thead data-options="frozen:true">
+        <tr>
+          <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+        </tr>
+      </thead>
+		</table>
+    <div id="voucher-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:300px; padding:10px;">
+        <form id="voucher-form" method="post">
+            <table>
+                <tr>
+                    <td width="120" align="right">主车牌:</td>
+                    <td><input type="text" name="licenseplate" class="easyui-textbox" data-options="required:true,prompt:'主车牌'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">挂车牌:</td>
+                    <td><input type="text" name="trailerlicensepate" class="easyui-textbox" data-options="required:true,prompt:'挂车牌'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款类型:</td>
+                    <td><input type="text" name="type" class="easyui-combobox"  data-options="
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/voucherType.json',
+                    required:true" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款时间:</td>
+                    <td><input type="text" name="voucherdate" class="easyui-datebox" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款金额(元):</td>
+                    <td><input type="text" name="sum" class="easyui-textbox" data-options="required:true,prompt:'借款金额(元)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款时长(月):</td>
+                    <td><input type="text" name="months" class="easyui-numberspinner" data-options="required:true,increment:1,prompt:'借款时长'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">利率(月息):</td>
+                    <td><input type="text" name="moneyrate" class="easyui-textbox" data-options="required:true,prompt:'利率(月息)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">计息方式:</td>
+                    <td><input type="text" name="loantype" class="easyui-combobox"  data-options="
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/loanType.json',
+                    required:true" /></td>
+                </tr>
+                <tr>
+                    <td align="right">备注:</td>
+                    <td><input type="text" name="remarks" class="easyui-textarea" data-options="prompt:'备注'" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+	</div>
+	<script type="text/javascript">
+		$('.easyui-datagrid-voucher').datagrid({
+			title: '凭据列表',
+      iconCls:'icon-file',
+			fit:true,
+      rownumbers:true,
+			singleSelect:true,
+			collapsible:true,
+			url:host + '/ssm/voucher/voucherList',
+			method:'get',
+			fitColumns: true,
+			pagination: true,
+			columns: [ [
+				{field: 'id',title: '凭据编号',width:80,hidden:true},
+        {field: 'truckid',title: '车辆编号',width:80,hidden:true},
+        {field: 'licenseplate',title: '主车牌',width:80},
+        {field: 'trailerlicensepate',title: '挂车牌',width:80},
+        {field: 'type',title: '借款类型',width:80},
+        {field: 'voucherdate',title: '借款日期',width:80,
+          formatter:function(date){
+            return dateboxFormatter(date);
+          }
+        },
+        {field: 'sum',title: '借款金额(元)',width:80},
+        {field: 'moneyrate',title: '利率(月息)',width:80},
+        {field: 'months',title: '借款时长(月)',width:80},
+        {field: 'loantype',title: '计息方式',width:80},
+        {field: 'remarks',title: '备注',width:250}
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-voucher').datagrid('reload'); }},
+				// {text: '新增',iconCls:'icon-add',
+        //   handler:function(){
+        //     var level = getLevel();
+        //     if(level > 3){
+        //       $.messager.alert('信息提示', '您没有操作权限,请联系管理员.', 'info');
+        //       return;
+        //     }
+        //     openVoucherDialog();
+        //   }
+        // },
+				// {text: '编辑',iconCls:'icon-edit'},
+				{text: '删除',iconCls:'icon-remove',
+          handler:function(){
+            var item = $('.easyui-datagrid-voucher').datagrid('getSelected');
+            if(!item){
+              $.messager.alert('信息提示', '操作前必须先选中一行.', 'error');
+              return;
+            }
+            var level = getLevel();
+            if(level > 3){
+              $.messager.alert('信息提示', '您没有操作权限,请联系管理员.', 'info');
+              return;
+            }
+            var index = $('.easyui-datagrid-voucher').datagrid('getRowIndex',item);
+            deleteVoucher(item.id,index);
+          }
+        }
+			]
+		});
+
+    /**
+     * Name 打开新增窗口
+     */
+    function openVoucherDialog() {
+        $('#voucher-form').form('clear');
+        $('#voucher-dialog').dialog({
+            closed: false,
+            iconCls: 'icon-add',
+            modal: true,
+            title: "新增",
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function() {
+                    addVoucher();
+                }
+            }, {
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function() {
+                    $('#voucher-dialog').dialog('close');
+                }
+            }]
+        });
+    }
+
+    /**
+     *  Name 新增
+     **/
+    function addVoucher() {
+        var data = {};
+        var t = $('#voucher-form').serializeArray();
+        $.each(t, function () {
+            data[this.name] = this.value;
+        });
+        $.ajax({
+            url: host + '/ssm/voucher/addVoucher',
+            type: "post",
+            cache: false,
+            async: false,
+            data: data,
+            success: function(data) {
+                if (data == 0) {
+                    $.messager.alert('信息提示', '提交失败,是否车牌错误或已经存在相同计息方式的凭证！', 'error');
+                } else {
+                    $('#voucher-dialog').dialog('close');
+                    $('.easyui-datagrid-voucher').datagrid('reload');
+                    $.messager.alert('信息提示', '提交成功！', 'info');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                //On error do this
+                console.info("addVoucher error.");
+            }
+        });
+    }
+
+    /*
+    * Name 删除
+    */
+    function deleteVoucher(id,index){
+      $.ajax({
+        url:host + '/ssm/voucher/deleteVoucher',
+        type:'post',
+        cache:false,
+        async:false,
+        data:{
+          id:id
+        },
+        success:function(data){
+          if(data>0){
+            $('.easyui-datagrid-voucher').datagrid('deleteRow',index);
+            $.messager.alert('信息提示', '删除成功！', 'info');
+          }else{
+            $.messager.alert('信息提示', '删除失败！', 'info');
+          }
+        },
+        error:function(xhr, ajaxOptions, thrownError){
+          console.info("deleteVoucher error.");
+        }
+      });
+    }
+
+
+		function resetVoucher(){
+			$("#licenseplate1").textbox('clear');
+      $("#trailerlicensepate1").textbox('clear');
+		}
+
+
+		function searchVoucher(){
+			var licensePlate = $("#licenseplate1").textbox("getValue");
+      var trailerLicensePate = $("#trailerlicensepate1").textbox("getValue");
+      var options = $(".easyui-datagrid-voucher" ).datagrid("getPager").data("pagination" ).options;
+      var page = options.pageNumber;
+      var rows = options.pageSize;
+      $.ajax({
+        url:host+'/ssm/voucher/voucherList',
+        type:'get',
+        cache:false,
+        async:false,
+        data:{
+          licensePlate:licensePlate,
+          trailerLicensePate:trailerLicensePate,
+          page:page,
+          rows:rows
+        },
+        success:function(data){
+          console.info("searchVoucher success.");
+          $('.easyui-datagrid-voucher').datagrid('loadData',data);
+        },
+        error:function(xhr, ajaxOptions, thrownError){
+          console.info("searchVoucher fall.");
+        }
+      });
+		}
+	</script>
+</div>

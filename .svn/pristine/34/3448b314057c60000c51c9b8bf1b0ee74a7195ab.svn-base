@@ -1,0 +1,361 @@
+welcome!
+<!-- <div class="easyui-tabs-content">
+  <div style="display:none;" id="st">
+    非常重要的提示:<a class="easyui-linkbutton" style="color:red;" id="doit"><i class="fa fa-search"></i> 今天是本月25日，请点击我进行结算！！</a>
+  </div>
+  <div class="easyui-panel" data-options="width:800">
+    <div class="datagrid-content">
+  		<table class="easyui-datagrid-earlyWarning1">
+        <thead data-options="frozen:true">
+          <tr>
+            <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+          </tr>
+        </thead>
+  		</table>
+    </div>
+  </div>
+  <div class="easyui-panel" data-options="width:800">
+    <div class="datagrid-content">
+  		<table class="easyui-datagrid-earlyWarning2">
+        <thead data-options="frozen:true">
+          <tr>
+            <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+          </tr>
+        </thead>
+  		</table>
+    </div>
+  </div>
+  <div class="easyui-panel" data-options="width:800">
+    <div class="datagrid-content">
+  		<table class="easyui-datagrid-repaymentOverRent">
+        <thead data-options="frozen:true">
+          <tr>
+            <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+          </tr>
+        </thead>
+  		</table>
+    </div>
+  </div>
+  <div class="easyui-panel" data-options="width:800">
+    <div class="datagrid-content">
+  		<table class="easyui-datagrid-lastPay">
+        <thead data-options="frozen:true">
+          <tr>
+            <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+          </tr>
+        </thead>
+  		</table>
+    </div>
+  </div>
+  <div class="easyui-panel" data-options="width:800">
+    <div class="datagrid-content">
+  		<table class="easyui-datagrid-drivingLicense">
+        <thead data-options="frozen:true">
+          <tr>
+            <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+          </tr>
+        </thead>
+  		</table>
+    </div>
+  </div>
+  <div class="easyui-panel" data-options="width:800">
+    <div class="datagrid-content">
+  		<table class="easyui-datagrid-taxiLicense">
+        <thead data-options="frozen:true">
+          <tr>
+            <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+          </tr>
+        </thead>
+  		</table>
+    </div>
+  </div>
+  <div class="easyui-panel" data-options="width:800">
+    <div class="datagrid-content">
+  		<table class="easyui-datagrid-contract">
+        <thead data-options="frozen:true">
+          <tr>
+            <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+          </tr>
+        </thead>
+  		</table>
+    </div>
+  </div> -->
+  <!-- <script type="text/javascript">
+    var thisDate = getNowDate();
+    var day = thisDate.split("-")[2];
+    var flag = false;
+    // checkHasDate(thisDate);
+    if(day == "25" && flag){
+      $('#st').fadeIn(300);
+    }
+
+    $(function(){
+      $('#doit').on('click',function(){
+          $.ajax({
+            url:host+"/ssm/payLog/settlement",
+            type:'post',
+            data:{},
+            cache:false,
+            async:false,
+            beforeSend:function(){
+                $('#st').hide();
+            },
+            success:function(data){
+              if(data == 1){
+                $.messager.alert('信息提示', '执行成功~!', 'info');
+              }else{
+                $.messager.alert('信息提示', '执行失败,请联系管理员.', 'error');
+              }
+            },
+            error:function(){
+              console.log("settlement 结算 fall.");
+            }
+          });
+      });
+    });
+
+    // function checkHasDate(date){
+    //   $.ajax({
+    //     url:host+"/ssm/payLog/checkHasDate",
+    //     type:'post',
+    //     data:{settlementDate:date},
+    //     cache:false,
+    //     async:false,
+    //     success:function(data){
+    //       if(data>0){
+    //           flag = false;
+    //       }else{
+    //           flag = true;
+    //       }
+    //     },
+    //     error:function(){
+    //       console.log("checkHasDate fall.");
+    //     }
+    //   });
+    // }
+
+    $('.easyui-datagrid-earlyWarning1').datagrid({
+      title: '交强险到期预警',
+      iconCls:'icon-file',
+			// fit:true,
+      rownumbers:true,
+			singleSelect:true,
+			collapsible:true,
+			url:host + '/ssm/truck/earlyWarning',
+			method:'get',
+      queryParams:{
+        name:"compulsoryInsuranceTime"
+      },
+			// fitColumns: true,
+			pagination: true,
+			columns: [ [
+        {field: 'licensePlate',title: '主车牌',width:120},
+        {field: 'trailerLicensePate',title: '挂车牌',width:120},
+        {field: 'compulsoryInsuranceTime',title: '到期日期',width:120,
+        formatter:function(date){
+          return dateboxFormatter(date);
+        }
+      },
+        {field: 'compulsoryInsuranceTimeDays',title: '距离到期日期的天数',width:150,
+        styler:function(value,row,index){
+          if(value<30){
+            return 'background-color:#ffee00;color:red;';
+          }
+        }
+      }
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-earlyWarning1').datagrid('reload'); }}
+			]
+    });
+
+    $('.easyui-datagrid-earlyWarning2').datagrid({
+      title: '商业险到期预警',
+      iconCls:'icon-file',
+			// fit:true,
+      rownumbers:true,
+			singleSelect:true,
+			collapsible:true,
+			url:host + '/ssm/truck/earlyWarning',
+			method:'get',
+      queryParams:{
+        name:"commercialInsuranceTime"
+      },
+			// fitColumns: true,
+			pagination: true,
+			columns: [ [
+        {field: 'licensePlate',title: '主车牌',width:120},
+        {field: 'trailerLicensePate',title: '挂车牌',width:120},
+        {field: 'commercialInsuranceTime',title: '到期日期',width:120,
+        formatter:function(date){
+          return dateboxFormatter(date);
+        }
+      },
+        {field: 'commercialInsuranceTimeDays',title: '距离到期日期的天数',width:150,
+        styler:function(value,row,index){
+          if(value<30){
+            return 'background-color:#ffee00;color:red;';
+          }
+        }
+      }
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-earlyWarning1').datagrid('reload'); }}
+			]
+    });
+
+    $('.easyui-datagrid-drivingLicense').datagrid({
+      title: '行驶证到期预警',
+      iconCls:'icon-file',
+			// fit:true,
+      rownumbers:true,
+			singleSelect:true,
+			collapsible:true,
+			url:host + '/ssm/truck/earlyWarning',
+			method:'get',
+      queryParams:{
+        name:"drivingLicense"
+      },
+			// fitColumns: true,
+			pagination: true,
+			columns: [ [
+        {field: 'licensePlate',title: '主车牌',width:120},
+        {field: 'trailerLicensePate',title: '挂车牌',width:120},
+        {field: 'drivingLicenseTime',title: '到期日期',width:120,
+        formatter:function(date){
+          return dateboxFormatter(date);
+        }
+      },
+        {field: 'drivingLicenseTimeDays',title: '距离到期日期的天数',width:150,
+        styler:function(value,row,index){
+          if(value<30){
+            return 'background-color:#ffee00;color:red;';
+          }
+        }
+      }
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-drivingLicense').datagrid('reload'); }}
+			]
+    });
+
+    $('.easyui-datagrid-taxiLicense').datagrid({
+      title: '营运证证到期预警',
+      iconCls:'icon-file',
+			// fit:true,
+      rownumbers:true,
+			singleSelect:true,
+			collapsible:true,
+			url:host + '/ssm/truck/earlyWarning',
+			method:'get',
+      queryParams:{
+        name:"operationCertificate"
+      },
+			// fitColumns: true,
+			pagination: true,
+			columns: [ [
+        {field: 'licensePlate',title: '主车牌',width:120},
+        {field: 'trailerLicensePate',title: '挂车牌',width:120},
+        {field: 'operationCertificateTime',title: '到期日期',width:120,
+        formatter:function(date){
+          return dateboxFormatter(date);
+        }
+      },
+        {field: 'operationCertificateTimeDays',title: '距离到期日期的天数',width:150,
+        styler:function(value,row,index){
+          if(value<30){
+            return 'background-color:#ffee00;color:red;';
+          }
+        }
+      }
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-taxiLicense').datagrid('reload'); }}
+			]
+    });
+
+    // $('.easyui-datagrid-repaymentOverRent').datagrid({
+    //   title: '欠款数额预警',
+    //   iconCls:'icon-file',
+		// 	// fit:true,
+    //   rownumbers:true,
+		// 	singleSelect:true,
+		// 	collapsible:true,
+		// 	url:host + '/ssm/payLog/repaymentOverRent',
+		// 	method:'get',
+    //   queryParams:{
+    //     name:"repaymentOverRent"
+    //   },
+		// 	// fitColumns: true,
+		// 	pagination: true,
+		// 	columns: [ [
+    //     {field: 'licensePlate',title: '主车牌',width:120},
+    //     {field: 'trailerLicensePate',title: '挂车牌',width:120},
+    //     {field: 'money',title: '欠费数额',width:150},
+    //     {field: 'month',title: '月租金',width:120}
+		// 	] ],
+		// 	toolbar: [
+		// 		{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-repaymentOverRent').datagrid('reload'); }}
+		// 	]
+    // });
+
+    // $('.easyui-datagrid-lastPay').datagrid({
+    //   title: '最后还款时间预警',
+    //   iconCls:'icon-file',
+		// 	// fit:true,
+    //   rownumbers:true,
+		// 	singleSelect:true,
+		// 	collapsible:true,
+		// 	url:host + '/ssm/payLog/repaymentOverRent',
+		// 	method:'get',
+    //   queryParams:{
+    //     name:"lastPay"
+    //   },
+		// 	// fitColumns: true,
+		// 	pagination: true,
+		// 	columns: [ [
+    //     {field: 'licensePlate',title: '主车牌',width:120},
+    //     {field: 'trailerLicensePate',title: '挂车牌',width:120},
+    //     {field: 'lastpayDate',title: '最后还款日期',width:150,
+    //     formatter:function(date){
+    //       return dateboxFormatter(date);
+    //     }
+    //   },
+    //     {field: 'days',title: '最后还款日距今日天数',width:150}
+		// 	] ],
+		// 	toolbar: [
+		// 		{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-lastPay').datagrid('reload'); }}
+		// 	]
+    // });
+
+    // $('.easyui-datagrid-contract').datagrid({
+    //   title: '合同到期预警',
+    //   iconCls:'icon-file',
+		// 	// fit:true,
+    //   rownumbers:true,
+		// 	singleSelect:true,
+		// 	collapsible:true,
+		// 	url:host + '/ssm/voucher/getContract',
+		// 	method:'get',
+		// 	// fitColumns: true,
+		// 	pagination: true,
+		// 	columns: [ [
+    //     {field: 'licensePlate',title: '主车牌',width:120},
+    //     {field: 'trailerLicensePate',title: '挂车牌',width:120},
+    //     {field: 'contractDate',title: '到期日期',width:150},
+    //     {field: 'days',title: '合同到期日期距今日天数',width:200,
+    //     styler:function(value,row,index){
+    //       if(value<30){
+    //         return 'background-color:#ffee00;color:red;';
+    //       }
+    //     }
+    //   }
+		// 	] ],
+		// 	toolbar: [
+		// 		{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-contract').datagrid('reload'); }}
+		// 	]
+    // });
+
+
+  </script>
+</div> -->

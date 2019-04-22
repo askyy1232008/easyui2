@@ -1,0 +1,1923 @@
+﻿<script type="text/javascript" src="script/baiduMap.js"></script>
+<div class="easyui-tabs-content">
+    <div id="repaylistall-dialog" class="easyui-dialog" style="width:1700px;height:800px;padding:10px;" data-options="iconCls:'icon-file',closed:true">
+        <form id="repaylistall-form" method="post" style="width:100%;height:100%;">
+          <div class="datagrid-content" style="width:100%;height:100%;">
+            <table class="easyui-datagrid-repaylistall">
+              <thead data-options="frozen:true">
+                <tr>
+                  <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </form>
+    </div>
+    <div id="repaylistallparams-dialog" class="easyui-dialog" style="width:400px;padding:10px;" data-options="iconCls:'icon-file',closed:true">
+        <form id="repaylistallparams-form" method="post">
+          <table>
+            <tr>
+              <td align="right">逾期天数(天):</td>
+              <td>
+                <input type="text" name="paramdays" id="paramdays" class="easyui-textbox" data-options="required:true,prompt:'逾期天数(天)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">利率:</td>
+              <td>
+                <input type="text" name="paramrate" id="paramrate" class="easyui-textbox" data-options="required:true,prompt:'利率'" />
+              </td>
+            </tr>
+          </table>
+        </form>
+    </div>
+    <div id="repaylist-dialog" class="easyui-dialog" style="width:1700px;height:800px;padding:10px;" data-options="iconCls:'icon-file',closed:true">
+        <form id="repaylist-form" method="post" style="width:100%;height:100%;">
+          <div class="datagrid-content" style="width:100%;height:100%;">
+        		<table class="easyui-datagrid-repaylist">
+        			<thead data-options="frozen:true">
+                <tr>
+                  <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+                </tr>
+              </thead>
+        		</table>
+        	</div>
+        </form>
+    </div>
+    <div id="repay-dialog" class="easyui-dialog" style="width:400px;padding:10px;" data-options="iconCls:'icon-file',closed:true">
+        <form id="repay-form" method="post">
+          <table>
+            <tr>
+              <td align="right">合同日期*:</td>
+              <td>
+                <input type="text" name="voucherdate" id="voucherdate" class="easyui-datebox" data-options="required:true,prompt:'2019-04-08'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">备注*:</td>
+              <td>
+                <input type="text" name="remarks" id="remarks" class="easyui-textbox" data-options="required:true,prompt:'备注'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">还款日期*:</td>
+              <td>
+                <input type="text" name="paydate" id="paydate" class="easyui-datebox" data-options="required:true,prompt:'2019-04-08'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">总价(元)*:</td>
+              <td>
+                <input type="text" name="total" id="total" class="easyui-textbox" data-options="required:true,prompt:'总价(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">周期(月)*:</td>
+              <td>
+                <input type="text" name="months" id="months" class="easyui-textbox" data-options="required:true,prompt:'周期(月)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">总欠款(元)*:</td>
+              <td>
+                <input type="text" name="totalrepay" id="totalrepay" class="easyui-textbox" data-options="required:true,prompt:'总欠款(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">本月应还(元)*:</td>
+              <td>
+                <input type="text" name="monthlyrepay" id="monthlyrepay" class="easyui-textbox" data-options="required:true,prompt:'本月应还(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">本次还款(元)*:</td>
+              <td>
+                <input type="text" name="nowpay" id="nowpay" class="easyui-textbox" data-options="required:true,prompt:'本次还款(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">逾期天数(天)*:</td>
+              <td>
+                <input type="text" name="days" id="days" class="easyui-textbox" data-options="required:true,prompt:'逾期天数(天)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">利率*:</td>
+              <td>
+                <input type="text" name="interestrate" id="interestrate" class="easyui-textbox" data-options="required:true,prompt:'利率'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">本月已还(元):</td>
+              <td>
+                <input type="text" name="monthlypayed" id="monthlypayed" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'本月已还(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">剩余欠款(元):</td>
+              <td>
+                <input type="text" name="remainingarrears" id="remainingarrears" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'剩余欠款(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">滞纳金(元):</td>
+              <td>
+                <input type="text" name="latefee" id="latefee" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'滞纳金(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">当月合计欠款(元):</td>
+              <td>
+                <input type="text" name="monthlyneedpay" id="monthlyneedpay" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'当月合计欠款(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">还款后总欠款(元):</td>
+              <td>
+                <input type="text" name="totalrepayafterpayed" id="totalrepayafterpayed" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'还款后总欠款(元)'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">月租(元):</td>
+              <td>
+                <input type="text" name="monthlyrent" id="monthlyrent" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'月租(元)'" />
+              </td>
+            </tr>
+          </table>
+        </form>
+    </div>
+    <div id="loanpayed-dialog" class="easyui-dialog" style="width:400px;padding:10px;" data-options="iconCls:'icon-file',closed:true">
+        <form id="loanpayed-form" method="post">
+          <table>
+            <tr>
+              <td align="right">还款日期:</td>
+              <td>
+                <input type="text" name="paydate" id="paydate" class="easyui-datebox" data-options="required:true,prompt:'还款日期'" />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">还款金额(元):</td>
+              <td>
+                <input type="text" name="paynumber" id="paynumber" class="easyui-textbox" data-options="required:true,prompt:'还款金额(元)'" />
+              </td>
+            </tr>
+          </table>
+        </form>
+    </div>
+    <div id="loan-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:1300px; padding:10px;">
+        <form id="loan-form" method="post">
+            <table>
+                <tr>
+                    <td align="right">贷款车辆(车架号):</td>
+                    <td>
+                      <input type="text" name="vin" id="loanvin" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'贷款车辆(车架号)'" />
+                    </td>
+                    <td align="right">贷款人:</td>
+                    <td>
+                      <input type="text" name="loanpeople" id="loanloanpeople" class="easyui-textbox" data-options="required:true,prompt:'贷款人'" />
+                    </td>
+                    <td align="right">金融公司:</td>
+                    <td>
+                      <input type="text" name="financecompany" id="loanfinancecompany" class="easyui-textbox" data-options="required:true,prompt:'金融公司'" />
+                    </td>
+                    <td align="right">放款日期:</td>
+                    <td>
+                      <input type="text" name="loandate" id="loanloandate" class="easyui-datebox" data-options="required:true,prompt:'放款日期'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">贷款金额:</td>
+                    <td>
+                      <input type="text" name="loanmoney" id="loanloanmoney" class="easyui-textbox" data-options="required:true,prompt:'贷款金额'" />
+                    </td>
+                    <td align="right">利率:</td>
+                    <td>
+                      <input type="text" name="moneyrate" id="loanmoneyrate" class="easyui-textbox" data-options="required:true,prompt:'利率'" />
+                    </td>
+                    <td align="right">总利息:</td>
+                    <td>
+                      <input type="text" name="grossinterest" id="loangrossinterest" class="easyui-textbox" data-options="required:true,prompt:'总利息'" />
+                    </td>
+                    <td align="right">贷款手续费:</td>
+                    <td>
+                      <input type="text" name="loanservicecharge" id="loanloanservicecharge" class="easyui-textbox" data-options="required:true,prompt:'贷款手续费'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">贷款手续费备注:</td>
+                    <td>
+                      <input type="text" name="loanservicechargemark" id="loanloanservicechargemark" class="easyui-textbox" data-options="required:true,prompt:'贷款手续费备注'" />
+                    </td>
+                    <td align="right">其他费用:</td>
+                    <td>
+                      <input type="text" name="othercost" id="loanothercost" class="easyui-textbox" data-options="required:true,prompt:'其他费用'" />
+                    </td>
+                    <td align="right">其他费用备注:</td>
+                    <td>
+                      <input type="text" name="othercostmark" id="loanothercostmark" class="easyui-textbox" data-options="required:true,prompt:'其他费用备注'" />
+                    </td>
+                    <td align="right">保证金:</td>
+                    <td>
+                      <input type="text" name="bond" id="loanbond" class="easyui-textbox" data-options="required:true,prompt:'保证金'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">实际到账金额:</td>
+                    <td>
+                      <input type="text" name="actual" id="loanactual" class="easyui-textbox" data-options="required:true,prompt:'实际到账金额'" />
+                    </td>
+                    <td align="right">每月还款:</td>
+                    <td>
+                      <input type="text" name="monthlyrepayment" id="loanmonthlyrepayment" class="easyui-textbox" data-options="required:true,prompt:'每月还款'" />
+                    </td>
+                    <td align="right">还款期限（月）:</td>
+                    <td>
+                      <input type="text" name="trem" id="loantrem" class="easyui-textbox" data-options="required:true,prompt:'还款期限（月）'" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="truck-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save',title:'车辆信息'" style="width:1300px;height:800px;padding:10px;">
+        请选择:<input type="text" name="state" id="state" class="easyui-combobox" data-options="valueField:'id',textField:'text'" />
+        <form id="truck-form" method="post" autocomplete="on">
+            <table id="lp">
+                <caption style="float:left;">
+                    <input type="hidden" id="truckid" name="truckid" />
+                    <input type="text" name="licenseplate" id="licenseplate" class="easyui-textbox" data-options="required:true,prompt:'主车牌'" />
+                </caption>
+                <tr>
+                    <td align="right">行驶证到期日:</td>
+                    <td>
+                        <input type="text" name="drivinglicense" id="drivinglicense" class="easyui-datebox" data-options="required:true,prompt:'行驶证到期日'" />
+                    </td>
+                    <td align="right">营运证到期日:</td>
+                    <td>
+                        <input type="text" name="operationcertificate" id="operationcertificate" class="easyui-datebox" data-options="required:true,prompt:'营运证到期日'" />
+                    </td>
+                    <td align="right">交强险到期日:</td>
+                    <td>
+                        <input type="text" name="compulsoryinsurancetime" id="compulsoryinsurancetime" class="easyui-datebox" data-options="required:true,prompt:'交强险到期日'" />
+                    </td>
+                    <td align="right">商业险到期日:</td>
+                    <td>
+                        <input type="text" name="commercialinsurancetime" id="commercialinsurancetime" class="easyui-datebox" data-options="required:true,prompt:'商业险到期日'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">车架号:</td>
+                    <td>
+                        <input type="text" name="vin" id="vin" class="easyui-textbox" data-options="required:true,prompt:'车架号'" />
+                    </td>
+                    <td align="right">登记日期:</td>
+                    <td>
+                        <input type="text" name="recorddate" id="recorddate" class="easyui-datebox" data-options="required:true,prompt:'登记日期'" />
+                    </td>
+                    <td align="right">登记证书编号:</td>
+                    <td>
+                        <input type="text" name="registrationcertificatenumber" id="registrationcertificatenumber" class="easyui-textbox" data-options="required:true,prompt:'登记证书编号'" />
+                    </td>
+                    <td align="right">发动机号:</td>
+                    <td>
+                        <input type="text" name="enginenumber" id="enginenumber" class="easyui-textbox" data-options="required:true,prompt:'发动机号'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">车辆品牌:</td>
+                    <td>
+                        <input type="text" name="vehiclebrand" id="vehiclebrand" class="easyui-textbox" data-options="required:true,prompt:'车辆品牌'" />
+                    </td>
+                    <td align="right">车辆型号:</td>
+                    <td>
+                        <input type="text" name="trucktype" id="trucktype" class="easyui-textbox" data-options="required:true,prompt:'车辆型号'" />
+                    </td>
+                    <td align="right">车辆类型:</td>
+                    <td>
+                        <input type="text" name="vehicletype" id="vehicletype" class="easyui-textbox" data-options="required:true,prompt:'车辆类型'" />
+                    </td>
+                    <td align="right">车辆颜色:</td>
+                    <td>
+                        <input type="text" name="vehiclecolor" id="vehiclecolor" class="easyui-textbox" data-options="required:true,prompt:'车辆颜色'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">外廓尺寸MM:</td>
+                    <td>
+                        <input type="text" name="appearance" id="appearance" class="easyui-textbox" data-options="required:true,prompt:'外廓尺寸MM'" />
+                    </td>
+                    <td align="right">轴数:</td>
+                    <td>
+                        <input type="text" name="axlenumber" id="axlenumber" class="easyui-textbox" data-options="required:true,prompt:'轴数'" />
+                    </td>
+                    <td align="right">马力:</td>
+                    <td>
+                        <input type="text" name="horsepower" id="horsepower" class="easyui-textbox" data-options="required:true,prompt:'马力'" />
+                    </td>
+                    <td align="right">发动机型号:</td>
+                    <td>
+                        <input type="text" name="enginemodel" id="enginemodel" class="easyui-textbox" data-options="required:true,prompt:'发动机型号'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">准牵引总质量KG:</td>
+                    <td>
+                        <input type="text" name="totalmass" id="totalmass" class="easyui-textbox" data-options="required:true,prompt:'准牵引总质量KG'" />
+                    </td>
+                    <td align="right">总质量KG:</td>
+                    <td>
+                        <input type="text" name="authenticatedloadquality" id="authenticatedloadquality" class="easyui-textbox" data-options="required:true,prompt:'总质量KG'" />
+                    </td>
+                    <td align="right">整备质量KG:</td>
+                    <td>
+                        <input type="text" name="curbweight" id="curbweight" class="easyui-textbox" data-options="required:true,prompt:'整备质量KG'" />
+                    </td>
+                    <td align="right">速比:</td>
+                    <td>
+                        <input type="text" name="speedratio" id="speedratio" class="easyui-textbox" data-options="required:true,prompt:'速比'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">轮胎尺寸/数量:</td>
+                    <td>
+                        <input type="text" name="tyre" id="tyre" class="easyui-textbox" data-options="required:true,prompt:'轮胎尺寸/数量'" />
+                    </td>
+                    <td align="right">商业险保单号:</td>
+                    <td>
+                        <input type="text" name="commercialinsurancenumber" id="commercialinsurancenumber" class="easyui-textbox" data-options="required:true,prompt:'商业险保单号'" />
+                    </td>
+                    <td align="right">商业险保险公司:</td>
+                    <td>
+                        <input type="text" name="commercialinsurancecompany" id="commercialinsurancecompany" class="easyui-textbox" data-options="required:true,prompt:'商业险保险公司'" />
+                    </td>
+                    <td align="right">商业险保费:</td>
+                    <td>
+                        <input type="text" name="commercialinsurancecost" id="commercialinsurancecost" class="easyui-textbox" data-options="required:true,prompt:'商业险保费'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">车辆档案号:</td>
+                    <td>
+                        <input type="text" name="compulsoryinsurcancetypequota" id="compulsoryinsurcancetypequota" class="easyui-textbox" data-options="required:true,prompt:'车辆档案号'" />
+                    </td>
+                    <td align="right">交强险保单号:</td>
+                    <td>
+                        <input type="text" name="compulsoryinsurcancenumber" id="compulsoryinsurcancenumber" class="easyui-textbox" data-options="required:true,prompt:'交强险保单号'" />
+                    </td>
+                    <td align="right">交强险保险公司:</td>
+                    <td>
+                        <input type="text" name="compulsoryinsurancecompany" id="compulsoryinsurancecompany" class="easyui-textbox" data-options="required:true,prompt:'交强险保险公司'" />
+                    </td>
+                    <td align="right">交强险保费:</td>
+                    <td>
+                        <input type="text" name="compulsoryinsurancecost" id="compulsoryinsurancecost" class="easyui-textbox" data-options="required:true,prompt:'交强险保费'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">归属公司:</td>
+                    <td>
+                        <input type="text" name="truckingcompany" id="truckingcompany" class="easyui-textbox" data-options="required:true,prompt:'归属公司'" />
+                    </td>
+                </tr>
+                <tr>
+                  <td align="right">商业险险种保额:</td>
+                  <td>
+                      <textarea id="commercialinsurancetypes" name="commercialinsurancetypes" class="easyui-validatebox" data-options="required:true" style="width: 160px; height: 90px;"></textarea>
+                  </td>
+                </tr>
+            </table>
+            <table>
+              <caption style="float:left;">
+                  <span>
+                  <input type="hidden" id="truckOwnerid" name="truckOwnerid"  />
+                  <input type="text" name="truckOwner" id="truckOwner" class="easyui-combobox" data-options="valueField:'id',textField:'text'" />
+                  </span>
+              </caption>
+              <tr>
+                  <td align="right">姓名:</td>
+                  <td>
+                      <input type="text" name="name" id="name" class="easyui-textbox" data-options="required:true,prompt:'姓名'" />
+                  </td>
+                  <td align="right">电话:</td>
+                  <td>
+                      <input type="text" name="phone" id="phone" class="easyui-textbox" data-options="required:true,prompt:'电话',validType:'phoneAndMobile'" />
+                  </td>
+                  <td align="right">身份证:</td>
+                  <td>
+                      <input type="text" name="number" id="number" class="easyui-textbox" data-options="required:true,prompt:'身份证',validType:'idcard'" />
+                  </td>
+                  <td align="right">地址:</td>
+                  <td>
+                      <input type="text" name="adress" id="adress" class="easyui-textbox" data-options="required:true,prompt:'地址'" />
+                  </td>
+              </tr>
+              <tr>
+                <td align="right">选择承租人类型:</td>
+                <td>
+                  <input type="text" name="issingle" id="issingle" class="easyui-combobox" data-options="required:true,
+                  valueField:'id',
+                  textField:'text',
+                  data:[{
+                    'id':'个人',
+                    'text':'个人'
+                  },{
+                    'id':'车队',
+                    'text':'车队'
+                  }]" />
+                </td>
+              </tr>
+            </table>
+            <table>
+              <caption style="float:left;">
+                  <span>
+                  <input type="hidden" id="driverid" name="driverid"  />
+                  <input type="text" name="driver" id="driver" class="easyui-combobox" data-options="valueField:'id',textField:'text'" />
+                  </span>
+              </caption>
+              <tr>
+                  <td align="right">姓名:</td>
+                  <td>
+                      <input type="text" name="drivername" id="drivername" class="easyui-textbox" data-options="required:true,prompt:'姓名'" />
+                  <td align="right">电话:</td>
+                  <td>
+                      <input type="text" name="driverphone" id="driverphone" class="easyui-textbox" data-options="required:true,prompt:'电话',validType:'phoneAndMobile'" />
+                  </td>
+                  <td align="right">身份证:</td>
+                  <td>
+                      <input type="text" name="driveridcard" id="driveridcard" class="easyui-textbox" data-options="required:true,prompt:'身份证',validType:'idcard'" />
+                  </td>
+                  <td align="right">地址:</td>
+                  <td>
+                      <input type="text" name="driveraddress" id="driveraddress" class="easyui-textbox" data-options="required:true,prompt:'地址'" />
+                  </td>
+              </tr>
+            </table>
+            <table id="tl">
+              <caption style="float:left;">
+                  <input type="text" name="trailerlicensepate" id="trailerlicensepate" class="easyui-textbox" data-options="required:true,prompt:'挂车牌'" />
+              </caption>
+              <tr>
+                  <td align="right">行驶证到期日:</td>
+                  <td>
+                      <input type="text" name="gdrivinglicense" id="gdrivinglicense" class="easyui-datebox" data-options="required:true,prompt:'行驶证到期日'" />
+                  </td>
+                  <td align="right">营运证到期日:</td>
+                  <td>
+                      <input type="text" name="goperationcertificate" id="goperationcertificate" class="easyui-datebox" data-options="required:true,prompt:'营运证到期日'" />
+                  </td>
+                  <td align="right">商业险到期日:</td>
+                  <td>
+                      <input type="text" name="gcommercialinsurancedate" id="gcommercialinsurancedate" class="easyui-datebox" data-options="required:true,prompt:'商业险到期日'" />
+                  </td>
+              </tr>
+              <tr>
+                  <td align="right">车架号:</td>
+                  <td>
+                      <input type="text" name="gvin" id="gvin" class="easyui-textbox" data-options="required:true,prompt:'车架号'" />
+                  </td>
+                  <td align="right">登记日期:</td>
+                  <td>
+                      <input type="text" name="grecorddate" id="grecorddate" class="easyui-datebox" data-options="required:true,prompt:'登记日期'" />
+                  </td>
+                  <td align="right">登记证书编号:</td>
+                  <td>
+                      <input type="text" name="gregistrationcertificatenumber" id="gregistrationcertificatenumber" class="easyui-textbox" data-options="required:true,prompt:'登记证书编号'" />
+                  </td>
+              </tr>
+              <tr>
+                  <td align="right">车辆品牌:</td>
+                  <td>
+                      <input type="text" name="gvehiclebrand" id="gvehiclebrand" class="easyui-textbox" data-options="required:true,prompt:'车辆品牌'" />
+                  </td>
+                  <td align="right">车辆型号:</td>
+                  <td>
+                      <input type="text" name="gtrucktype" id="gtrucktype" class="easyui-textbox" data-options="required:true,prompt:'车辆型号'" />
+                  </td>
+                  <td align="right">车辆类型:</td>
+                  <td>
+                      <input type="text" name="gvehicletype" id="gvehicletype" class="easyui-textbox" data-options="required:true,prompt:'车辆类型'" />
+                  </td>
+                  <td align="right">车辆颜色:</td>
+                  <td>
+                      <input type="text" name="gvehiclecolor" id="gvehiclecolor" class="easyui-textbox" data-options="required:true,prompt:'车辆颜色'" />
+                  </td>
+              </tr>
+              <tr>
+                  <td align="right">总质量KG:</td>
+                  <td>
+                      <input type="text" name="gauthenticatedloadquality" id="gauthenticatedloadquality" class="easyui-textbox" data-options="required:true,prompt:'总质量KG'" />
+                  </td>
+                  <td align="right">整备质量KG:</td>
+                  <td>
+                      <input type="text" name="gcurbweight" id="gcurbweight" class="easyui-textbox" data-options="required:true,prompt:'整备质量KG'" />
+                  </td>
+                  <td align="right">核定载质量KG:</td>
+                  <td>
+                      <input type="text" name="gtotalmass" id="gtotalmass" class="easyui-textbox" data-options="required:true,prompt:'准牵引总质量KG'" />
+                  </td>
+                  <td align="right">后桥:</td>
+                  <td>
+                      <input type="text" name="grearaxle" id="grearaxle" class="easyui-textbox" data-options="required:true,prompt:'后桥'" />
+                  </td>
+              </tr>
+              <tr>
+                  <td align="right">外廓尺寸MM:</td>
+                  <td>
+                      <input type="text" name="gappearance" id="gappearance" class="easyui-textbox" data-options="required:true,prompt:'外廓尺寸MM'" />
+                  </td>
+                  <td align="right">货箱尺寸MM:</td>
+                  <td>
+                      <input type="text" name="gcontainersize" id="gcontainersize" class="easyui-textbox" data-options="required:true,prompt:'货箱尺寸MM'" />
+                  </td>
+                  <td align="right">轮胎尺寸/数量:</td>
+                  <td>
+                      <input type="text" name="gtyre" id="gtyre" class="easyui-textbox" data-options="required:true,prompt:'轮胎尺寸/数量'" />
+                  </td>
+                  <!--<td align="right">备用胎:</td>
+                  <td>
+                      <input type="text" name="gsparetire" id="gsparetire" class="easyui-textbox" data-options="disabled:true,value:'无',required:true,prompt:'备用胎'" />
+                  </td>-->
+              </tr>
+              <tr>
+                  <td align="right">商业险保单号:</td>
+                  <td>
+                      <input type="text" name="gcommercialinsurancenumber" id="gcommercialinsurancenumber" class="easyui-textbox" data-options="required:true,prompt:'商业险保单号'" />
+                  </td>
+                  <td align="right">商业险保险公司:</td>
+                  <td>
+                      <input type="text" name="gcommercialinsurancecompany" id="gcommercialinsurancecompany" class="easyui-textbox" data-options="required:true,prompt:'商业险保险公司'" />
+                  </td>
+                  <td align="right">商业险保费:</td>
+                  <td>
+                      <input type="text" name="gcommercialinsurancecost" id="gcommercialinsurancecost" class="easyui-textbox" data-options="required:true,prompt:'商业险保费'" />
+                  </td>
+              </tr>
+              <tr>
+                <td align="right">商业险险种保额:</td>
+                <td>
+                    <textarea id="gcommercialinsurancetypequota" name="gcommercialinsurancetypequota" class="easyui-validatebox" data-options="required:true" style="width: 160px; height: 90px;"></textarea>
+                </td>
+              </tr>
+            </table>
+        </form>
+    </div>
+    <div id="dlg" class="easyui-dialog" title="车辆轨迹" style="width:1700px;height:800px;padding:10px;" data-options="
+      iconCls: 'icon-file',
+      toolbar: '#dlg-toolbar',
+      closed:true
+    ">
+        <div id="container" style="width:100%;height:100%;"></div>
+    </div>
+
+    <div id="dlg-toolbar" style="padding:2px 0">
+        <table cellpadding="0" cellspacing="0" style="width:100%">
+            <tr>
+                <td style="padding-left:2px">
+                    <input class="easyui-textbox" id="licensePlate5" name="licensePlate5" style="width:120px;" data-options="required:true,prompt:'车牌号'" />
+                    <!-- <input class="easyui-textbox" id="trailerLicensePate5" name="trailerLicensePate5" style="width:120px;" data-options="prompt:'挂车牌'" /> -->
+                    <input id="dtStart" class="easyui-datetimebox" style="width:300px" data-options="required:true,prompt:'起始时间'" />
+                    <input id="dtEnd" class="easyui-datetimebox" style="width:300px" data-options="required:true,prompt:'结束时间'" />
+                </td>
+                <td style="text-align:right;padding-right:2px">
+                    <!-- <input class="easyui-searchbox" data-options="prompt:'Please input somthing'" style="width:150px"></input> -->
+                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" onclick="searchRajectory();"><i class="fa fa-search"></i> 查询</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- <div id="dlg-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:alert('save')">Save</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">Close</a>
+    </div> -->
+    <div class="search-box easyui-panel" data-options="title:'查询条件'">
+        <input class="easyui-textbox" id="truckingCompany" name="truckingCompany" data-options="prompt:'汽运公司'" />
+        <input class="easyui-textbox" id="licensePlate" name="licensePlate" data-options="prompt:'主车牌'" />
+        <input class="easyui-textbox" id="trailerLicensePate" name="trailerLicensePate" data-options="prompt:'挂车牌'" />
+        <a class="easyui-linkbutton" href="javascript:void(0)" onclick="searchTruck()"><i class="fa fa-search"></i> 查询</a>
+        <a class="easyui-linkbutton" href="javascript:void(0)" onclick="reset()"><i class="fa fa-rotate-left"></i> 重置</a>
+    </div>
+    <div id="tb" style="height:auto">
+        <!-- <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="actions('append')">新增车辆</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="actions('removeit')">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="actions('accept')">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="actions('reject')">撤销</a> -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="actions('addTruck')">新增车辆</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="actions('editTruck')">编辑车辆</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="actions('removeit')">删除车辆</a>
+        <!-- <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addVoucherOnTruck()">新增借款凭据</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="repayment()">车主还款</a> -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="repay()">车主还款</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="repaylist()">还款记录查看</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="repaylistallopen()">还款预结算</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="loan()">新增贷款凭据</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="loanpayed()">金融还款</a>
+        <!-- <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="findtruckowner()">查看车主</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="addtruckowner()">添加车主</a> -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="sreachTruck()">查询车辆轨迹</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-file',plain:true" onclick="sreachTruck1()">合作商车辆轨迹</a>
+    </div>
+    <table id="dg" class="easyui-datagrid easyui-datagrid-truck" style="height:90%;" data-options="
+      title:'车辆管理',
+      iconCls:'icon-edit',
+      pageList: [9999],
+      pageSize:9999,
+      singleSelect: true,
+      toolbar: '#tb',
+      url: host + '/ssm/truck/truckList',
+			method: 'get',
+      idField:'truckId',
+      rownumbers:true,
+      pagination:true,
+      autoRowHeight:true,
+			onDblClickRow: onDblClickRow
+      ">
+        <thead data-options="frozen:true">
+            <tr>
+                <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+                <th data-options="field:'truckid',width:50,hidden:true">ID</th>
+                <th data-options="field:'compulsoryinsurcancetypequota',width:100">车辆档案号</th>
+                <th data-options="field:'truckingcompany',width:150">归属公司</th>
+                <th data-options="field:'licenseplate',width:100">主车牌</th>
+                <th data-options="field:'vin',width:150">车架号</th>
+                <th data-options="field:'drivinglicense',width:120,
+             formatter:function(date){
+               return dateboxFormatter(date);
+             },
+             styler:function(value,row,index){
+               var days = getDays(getNowDate(),dateboxFormatter(row.drivinglicense));
+               if(days<=30 &amp;&amp; days>0){
+                  return 'background-color:#ffee00;color:red;';
+               }
+               if(days<=0){
+                 return 'background-color:red;color:#ffffff;';
+               }
+             }
+             ">行驶证到期日</th>
+                <th data-options="field:'operationcertificate',width:120,
+             formatter:function(date){
+               return dateboxFormatter(date);
+             },
+             styler:function(value,row,index){
+               var days = getDays(getNowDate(),dateboxFormatter(row.operationcertificate));
+               if(days<=30 &amp;&amp; days>0){
+                  return 'background-color:#ffee00;color:red;';
+               }
+               if(days<=0){
+                 return 'background-color:red;color:#ffffff;';
+               }
+             }">营运证到期日</th>
+                <th data-options="field:'compulsoryinsurancetime',width:120,
+             formatter:function(date){
+               return dateboxFormatter(date);
+             },
+             styler:function(value,row,index){
+               var days = getDays(getNowDate(),dateboxFormatter(row.compulsoryinsurancetime));
+               if(days<=30 &amp;&amp; days>0){
+                  return 'background-color:#ffee00;color:red;';
+               }
+               if(days<=0){
+                 return 'background-color:red;color:#ffffff;';
+               }
+             }">交强险到期日</th>
+                <th data-options="field:'commercialinsurancetime',width:120,
+             formatter:function(date){
+               return dateboxFormatter(date);
+             },
+             styler:function(value,row,index){
+               var days = getDays(getNowDate(),dateboxFormatter(row.commercialinsurancetime));
+               if(days<=30 &amp;&amp; days>0){
+                  return 'background-color:#ffee00;color:red;';
+               }
+               if(days<=0){
+                 return 'background-color:red;color:#ffffff;';
+               }
+             }">商业险到期日</th>
+                <th data-options="field:'trailerlicensepate',width:100">挂车牌</th>
+                <th data-options="field:'gdrivinglicense',width:120,
+             formatter:function(date){
+               return dateboxFormatter(date);
+             },
+             styler:function(value,row,index){
+               var days = getDays(getNowDate(),dateboxFormatter(row.gdrivinglicense));
+               if(days<=30 &amp;&amp; days>0){
+                  return 'background-color:#ffee00;color:red;';
+               }
+               if(days<=0){
+                 return 'background-color:red;color:#ffffff;';
+               }
+             }">挂车行驶证到期日</th>
+                <th data-options="field:'goperationcertificate',width:120,
+             formatter:function(date){
+               return dateboxFormatter(date);
+             },
+             styler:function(value,row,index){
+               var days = getDays(getNowDate(),dateboxFormatter(row.goperationcertificate));
+               if(days<=30 &amp;&amp; days>0){
+                  return 'background-color:#ffee00;color:red;';
+               }
+               if(days<=0){
+                 return 'background-color:red;color:#ffffff;';
+               }
+             }">挂车营运证到期日</th>
+                <th data-options="field:'gcommercialinsurancedate',width:120,
+             formatter:function(date){
+               return dateboxFormatter(date);
+             },
+             styler:function(value,row,index){
+               var days = getDays(getNowDate(),dateboxFormatter(row.gcommercialinsurancedate));
+               if(days<=30 &amp;&amp; days>0){
+                  return 'background-color:#ffee00;color:red;';
+               }
+               if(days<=0){
+                 return 'background-color:red;color:#ffffff;';
+               }
+             }">挂车商业险到期日</th>
+                <th data-options="field:'name',width:80">承租人</th>
+                <th data-options="field:'phone',width:100">电话</th>
+                <!--    <th data-options="field:'truckid',width:50,hidden:true">ID</th>
+                <th data-options="field:'truckingcompany',width:250,
+                editor:{
+                  type:'textbox',
+                  options:{
+                    required:true
+                  }
+                }">汽运公司</th>
+                <th data-options="field:'licenseplate',width:80,
+                editor:{
+                  type:'textbox',
+                  options:{
+                    required:true
+                  }
+                }">主车牌</th>
+                <th data-options="field:'istrailer',width:80,
+                formatter:function(value,row){
+                  return row.istrailer;
+                },
+                editor:{
+                  type:'combobox',
+                  options:{
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/isTrailer.json',
+                    required:true
+                  }
+                }">主挂车标识</th>
+                <th data-options="field:'trailerlicensepate',width:80,
+                editor:{
+                  type:'textbox',
+                  options:{
+                    required:true
+                  }
+                }">挂车牌</th>
+                <th data-options="field:'vehicletypes',width:80,
+                formatter:function(value,row){
+                  return row.vehicletypes;
+                },
+                editor:{
+                  type:'combobox',
+                  options:{
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/vehicleTypes.json',
+                    required:true
+                  }
+                }">车辆种类</th>
+                <th data-options="field:'vehicletype',width:150,
+                formatter:function(value,row){
+                  return row.vehicletype;
+                },
+                editor:{
+                  type:'combobox',
+                  options:{
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/vehicleType.json',
+                    required:true
+                  }
+                }">车辆类型</th>
+                <th data-options="field:'vehiclebrand',width:80,
+                formatter:function(value,row){
+                  return row.vehiclebrand;
+                },
+                editor:{
+                  type:'combobox',
+                  options:{
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/vehicleBrand.json',
+                    required:true
+                  }
+                }">车辆品牌</th>
+                <th data-options="field:'vehiclecolor',width:80,
+                formatter:function(value,row){
+                  return row.vehiclecolor;
+                },
+                editor:{
+                  type:'combobox',
+                  options:{
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/vehicleColor.json',
+                    required:true
+                  }
+                }">车辆颜色</th>
+                <th data-options="field:'recorddate',width:100,
+                formatter:function(date){
+                  return dateboxFormatter(date);
+                },
+                editor:{
+                  type:'datebox',options:{required:true}
+                }">登记日期</th>
+                <th data-options="field:'vehicleownerarea',width:150,
+                editor:{
+                  type:'textbox',
+                  options:{
+                    required:true
+                  }
+                }">车主地址</th>
+                <th data-options="field:'terestaccrual',width:100,
+                formatter:function(value,row){
+                  return row.terestaccrual;
+                },
+                editor:{
+                  type:'combobox',
+                  options:{
+                    valueField:'id',
+                    textField:'text',
+                    data:[{
+                      'id':'以欠款计算',
+                      'text':'以欠款计算'
+                    }],
+                    required:true
+                  }
+                }">计息方法</th>
+                <th data-options="field:'drivinglicense',width:100,
+                formatter:function(date){
+                  return dateboxFormatter(date);
+                },
+                editor:{
+                  type:'datebox',options:{required:true}
+                }">行驶证到期</th>
+                <th data-options="field:'operationcertificate',width:100,
+                formatter:function(date){
+                  return dateboxFormatter(date);
+                },
+                editor:{
+                  type:'datebox',options:{required:true}
+                }">营运证到期</th>
+                <th data-options="field:'nextmaintain',width:100,
+                formatter:function(date){
+                  return dateboxFormatter(date);
+                },
+                editor:{
+                  type:'datebox',options:{required:true}
+                }">保养到期</th>
+                <th data-options="field:'maintenancecost',width:100,editor:{type:'numberbox',options:{precision:2}}">保养费用(元)</th>
+                <th data-options="field:'gps',width:80,
+              formatter:function(value,row){
+                return row.gps;
+              },
+              editor:{
+                type:'combobox',
+                options:{
+                  valueField:'id',
+                  textField:'text',
+                  data:[{
+                    'id':'不详',
+                    'text':'不详'
+                  }],
+                  required:true
+                }
+              }">GPS</th>
+                <th data-options="field:'gpsremarks',width:150,editor:'textarea'">GPS备注</th>
+                <th data-options="field:'beidouinstrument',width:80,
+              formatter:function(value,row){
+                return row.beidouinstrument;
+              },
+              editor:{
+                type:'combobox',
+                options:{
+                  valueField:'id',
+                  textField:'text',
+                  data:[{
+                    'id':'不详',
+                    'text':'不详'
+                  }],
+                  required:true
+                }
+              }">北斗仪</th>
+                <th data-options="field:'beidouinstrumentremarks',width:150,editor:'textarea'">北斗仪备注</th>
+                <th data-options="field:'compulsoryinsurancetime',width:100,
+                formatter:function(date){
+                  return dateboxFormatter(date);
+                },
+              editor:{
+                type:'datebox',options:{required:true}
+              }">交强险到期</th>
+                <th data-options="field:'compulsoryinsurancecompany',width:100,
+              formatter:function(value,row){
+                return row.compulsoryinsurancecompany;
+              },
+              editor:{
+                type:'combobox',
+                options:{
+                  valueField:'id',
+                  textField:'text',
+                  method:'get',
+                  url:'json/combobox/insuranceCompany.json',
+                  required:true
+                }
+              }">交强险投保单位</th>
+                <th data-options="field:'compulsoryinsurancecost',width:100,editor:{type:'numberbox',options:{precision:2}}">交强险费用(元)</th>
+                <th data-options="field:'commercialinsurancetime',width:100,
+                formatter:function(date){
+                  return dateboxFormatter(date);
+                },
+              editor:{
+                type:'datebox',options:{required:true}
+              }">商业险到期</th>
+                <th data-options="field:'commercialinsurancecompany',width:100,
+              formatter:function(value,row){
+                return row.commercialinsurancecompany;
+              },
+              editor:{
+                type:'combobox',
+                options:{
+                  valueField:'id',
+                  textField:'text',
+                  method:'get',
+                  url:'json/combobox/insuranceCompany.json',
+                  required:true
+                }
+              }">交强险投保单位</th>
+                <th data-options="field:'commercialinsurancecost',width:100,editor:{type:'numberbox',options:{precision:2}}">商业险费用(元)</th>
+                <th data-options="field:'commercialinsurancetypes',width:250,
+                editor:{
+                  type:'combotree_multiple',
+                  options:{
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    onlyLeafCheck : true,
+                    url:'json/combotree/insuranceTypes.json'
+                  }
+                }
+                ">购买的商业险项目</th>
+                <th data-options="field:'drivermessage',width:250,editor:'textarea'">司机信息</th>
+
+                <th data-options="field:'vehicleremarks',width:150,editor:'textarea'">车辆备注</th>
+                <th data-options="field:'trucktype',width:100,editor:'textbox'">车辆型号</th>
+                <th data-options="field:'vin',width:100,editor:'textbox'">车架号</th>
+                <th data-options="field:'enginenumber',width:100,editor:'textbox'">发动机号</th>
+                <th data-options="field:'containersize',width:100,editor:'textbox'">货箱尺寸</th>
+                <th data-options="field:'axlenumber',width:100,editor:'textbox'">轴数</th>
+                <th data-options="field:'registrationcertificatenumber',width:100,editor:'textbox'">登记证书编号</th>
+                <th data-options="field:'authenticatedloadquality',width:100,editor:'numberbox'">核定载质量KG</th>
+                <th data-options="field:'curbweight',width:100,editor:'numberbox'">整备质量KG</th> -->
+
+            </tr>
+        </thead>
+    </table>
+    <div id="hezuo-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:300px; padding:10px;"></div>
+    <div id="truckowner-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:300px; padding:10px;">
+        <form id="truckowner-form" method="post">
+            <table>
+                <tr>
+                    <td align="right">姓名:</td>
+                    <td>
+                        <input type="text" name="truckownerName" id="truckownerName" class="easyui-textbox" data-options="required:true,prompt:'姓名'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">电话:</td>
+                    <td>
+                        <input type="text" name="truckownerPhone" id="truckownerPhone" class="easyui-textbox" data-options="required:true,prompt:'电话',validType:'phoneAndMobile'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">地址:</td>
+                    <td>
+                        <input type="text" name="truckownerAddress" id="truckownerAddress" class="easyui-textbox" data-options="required:true,prompt:'地址'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">身份证:</td>
+                    <td>
+                        <input type="text" name="truckownerNumber" id="truckownerNumber" class="easyui-textbox" data-options="required:true,prompt:'身份证',validType:'idcard'" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="repayment-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:300px; padding:10px;">
+        <form id="repayment-form" method="post">
+            <table>
+                <tr>
+                    <td align="right">日期:</td>
+                    <td><input type="text" name="year" class="easyui-textbox" id="repaymentyear" style="width:40px;" data-options="required:true" />年
+                        <input type="text" name="month" class="easyui-textbox" id="repaymentmonth" style="width:25px;" data-options="required:true" />月
+                        <input type="text" name="day" class="easyui-textbox" id="repaymentday" style="width:25px;" data-options="required:true" />日
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">本次还款金额(元):</td>
+                    <td>
+                        <input type="text" name="repaymentPay" id="repaymentPay" class="easyui-textbox" data-options="required:true,prompt:'本次还款金额(元)'" />
+                        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" id="sreachCalculateSum"><i class="fa fa-search"></i>查询</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">本次还完后还需还款总额(元):</td>
+                    <td><input type="text" name="repaymentSum" id="repaymentSum" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'本次还完后还需还款总额(元)'" /></td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+    <div id="voucherOnTruck-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:300px; padding:10px;">
+        <form id="voucherOnTruck-form" method="post">
+            <table>
+                <tr>
+                    <td width="120" align="right">主车牌:</td>
+                    <td><input type="text" name="licenseplate" id="licenseplatetextbox" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'主车牌'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">挂车牌:</td>
+                    <td><input type="text" name="trailerlicensepate" id="trailerlicensepatetextbox" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'挂车牌'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款类型:</td>
+                    <td><input type="text" name="type" class="easyui-combobox" data-options="
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/voucherType.json',
+                    required:true" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款时间:</td>
+                    <td><input type="text" name="voucherdate" class="easyui-datebox" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款金额(元):</td>
+                    <td><input type="text" name="sum" class="easyui-textbox" data-options="required:true,prompt:'借款金额(元)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">借款时长(月):</td>
+                    <td><input type="text" name="months" class="easyui-numberspinner" data-options="required:true,increment:1,prompt:'借款时长'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">利率(月息):</td>
+                    <td><input type="text" name="moneyrate" class="easyui-textbox" data-options="required:true,prompt:'利率(月息)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">计息方式:</td>
+                    <td><input type="text" name="loantype" class="easyui-combobox" data-options="
+                    valueField:'id',
+                    textField:'text',
+                    method:'get',
+                    url:'json/combobox/loanType.json',
+                    required:true" /></td>
+                </tr>
+                <tr>
+                    <td align="right">备注:</td>
+                    <td><input type="text" name="remarks" class="easyui-textarea" data-options="prompt:'备注'" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="truck-status-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:300px; padding:10px;">
+        <form id="truck-status-form" method="post">
+            <table>
+                <tr>
+                    <td width="120" align="right">主车牌:</td>
+                    <td><input type="text" name="licenseplate" id="statuslicenseplatetextbox" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'主车牌'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">挂车牌:</td>
+                    <td><input type="text" name="trailerlicensepate" id="statustrailerlicensepatetextbox" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'挂车牌'" /></td>
+                </tr>
+
+                <tr>
+                    <td align="right">前一月欠款(元):</td>
+                    <td><input type="text" name="beforemonthneedpay" id="beforemonthneedpay" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'前一月欠款(元)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">当前滞纳金(元):</td>
+                    <td><input type="text" name="nowznj" id="nowznj" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'当前滞纳金(元)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">本月应还款(元):</td>
+                    <td><input type="text" name="thismonthneedpay" id="thismonthneedpay" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'本月应还款(元)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">本月已还款(元):</td>
+                    <td><input type="text" name="thismonthpayed" id="thismonthpayed" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'本月已还款(元)'" /></td>
+                </tr>
+                <tr>
+                    <td align="right">本月合计欠费(元):</td>
+                    <td><input type="text" name="thismonthallneedpay" id="thismonthallneedpay" class="easyui-textbox" data-options="readonly:true,required:true,prompt:'本月合计欠费(元)'" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var editIndex = undefined;
+
+    function actions(action) {
+        var level = getLevel();
+        if (level < 4) {
+            switch (action) {
+                case 'append':
+                    append();
+                    break;
+                case 'removeit':
+                    if (checkSelectDatagrid()) {
+                        return;
+                    }
+                    removeit();
+                    break;
+                case 'accept':
+                    if (checkSelectDatagrid()) {
+                        return;
+                    }
+                    accept();
+                    break;
+                case 'reject':
+                    reject();
+                    break;
+                case 'getChanges':
+                    getChanges();
+                    break;
+                case 'addTruck':
+                    addNewTruck();
+                    break;
+                case 'editTruck':
+                    if (checkSelectDatagrid()) {
+                        return;
+                    }
+                    editThisTruck();
+                    break;
+            }
+        } else {
+            $.messager.alert('信息提示', '您没有该菜单权限,请联系管理员.', 'info');
+            return;
+        }
+    }
+
+    function endEditing() {
+        if (editIndex == undefined) {
+            return true
+        }
+        if ($('#dg').datagrid('validateRow', editIndex)) {
+            EndEditorFormatter("istrailer");
+            EndEditorFormatter("vehicletypes");
+            EndEditorFormatter("vehicletype");
+            EndEditorFormatter("vehiclebrand");
+            EndEditorFormatter("vehiclecolor");
+            EndEditorFormatter("terestaccrual");
+            EndEditorFormatter("gps");
+            EndEditorFormatter("beidouinstrument");
+            EndEditorFormatter("compulsoryinsurancecompany");
+            EndEditorFormatter("commercialinsurancecompany");
+            EndEditorFormatter("commercialinsurancetypes");
+            $('#dg').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function EndEditorFormatter(f) {
+        var ed = $('#dg').datagrid('getEditor', {
+            index: editIndex,
+            field: f
+        });
+        var text = $(ed.target).combobox('getText');
+        $('#dg').datagrid('getRows')[editIndex][f] = text;
+    }
+
+
+    function onDblClickRow(index) {
+        if (editIndex != index) {
+            if (endEditing()) {
+                $('#dg').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+                editIndex = index;
+            } else {
+                $('#dg').datagrid('selectRow', editIndex);
+            }
+        }
+    }
+
+    function append() {
+        if (endEditing()) {
+            var len = $('#dg').datagrid('getRows').length;
+            $('#dg').datagrid('insertRow', {
+                index: len + 1,
+                row: {}
+            });
+            $('#dg').datagrid('selectRow', len + 1)
+                .datagrid('beginEdit', len + 1);
+        }
+    }
+
+    function removeit() {
+        $.messager.confirm('提示', '是否要删除?', function(b){
+            if (b){
+              var item = $('#dg').datagrid('getSelected');
+              var index = $('#dg').datagrid('getRowIndex', item);
+              $('#dg').datagrid('cancelEdit', editIndex)
+                  .datagrid('deleteRow', index);
+              editIndex = undefined;
+              $.ajax({
+                  url: host + '/ssm/truck/deleteTruck',
+                  type: 'post',
+                  cache: false,
+                  async: false,
+                  data: {
+                      'truckid': item.truckid
+                  },
+                  success: function(data) {
+                      console.info("DeleteTruck success.");
+                      if (data > 0) {
+                          $.messager.alert('信息提示', '数据删除成功.', 'info');
+                      } else {
+                          $.messager.alert('信息提示', '数据删除失败.', 'info');
+                      }
+                  },
+                  error: function(xhr, ajaxOptions, thrownError) {
+                      console.info("DeleteTruck fall.");
+                      $.messager.alert('信息提示', '数据删除失败.', 'info');
+                  }
+              });
+            }else{
+              return;
+            }
+        });
+
+    }
+    function accept() {
+        if (endEditing()) {
+            $('#dg').datagrid('acceptChanges');
+            editTruck();
+        }
+    }
+
+    function reject() {
+        $('#dg').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+
+    function getChanges() {
+        var rows = $('#dg').datagrid('getChanges');
+        alert(rows.length + ' rows are changed!');
+    }
+
+
+
+    function editTruck() {
+        var truck = $('#dg').datagrid('getSelected');
+        $.ajax({
+            url: host + "/ssm/truck/editTruck",
+            type: "post",
+            cache: false,
+            async: false,
+            data: JSON.stringify(truck),
+            contentType: 'application/json',
+            success: function(data) {
+                console.info("EditTruck success.");
+                if (data.result.result) {
+                    if (data.result.action == "add") {
+                        $.messager.alert('信息提示', '数据保存成功,保存操作为 新增.', 'info');
+                    } else if (data.result.action == "update") {
+                        $.messager.alert('信息提示', '数据保存成功,保存操作为 修改.', 'info');
+                    }
+                } else {
+                    $.messager.alert('信息提示', '数据保存失败,是否已经存在此车辆.', 'error');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.info("EditTruck fall.");
+                $.messager.alert('信息提示', '数据保存失败,ajax EditTruck fall.', 'error');
+            }
+        });
+    }
+
+    function searchTruck() {
+        var truckingCompany = $("#truckingCompany").textbox("getValue");
+        var licensePlate = $("#licensePlate").textbox("getValue");
+        var trailerLicensePate = $("#trailerLicensePate").textbox("getValue");
+        var  options = $("#dg" ).datagrid("getPager" ).data("pagination" ).options;    
+        var  page = options.pageNumber;    
+        var  rows = options.pageSize;
+        $.ajax({
+            url: host + '/ssm/truck/truckList',
+            type: 'get',
+            cache: false,
+            async: false,
+            data: {
+                truckingCompany: truckingCompany,
+                licensePlate: licensePlate,
+                trailerLicensePate: trailerLicensePate,
+                page: page,
+                rows: rows
+            },
+            success: function(data) {
+                console.info("searchTruck success.");
+                $('#dg').datagrid('loadData', data);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.info("searchTruck fall.");
+            }
+        });
+    }
+
+    function reset() {
+        $("#truckingCompany").textbox('clear');
+        $("#licensePlate").textbox('clear');
+        $("#trailerLicensePate").textbox('clear');
+    }
+
+    function checkSelectDatagrid() {
+        var item = $('#dg').datagrid("getSelected");
+        if (!item) {
+            $.messager.alert('信息提示', '操作前需选中一行.', 'error');
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function repayment() {
+        if (checkSelectDatagrid()) {
+            return;
+        }
+        if(getLevel() > 3){
+          $.messager.alert('信息提示', '您没有权限，请联系管理员.', 'info');
+          return;
+        }
+        var item = $('#dg').datagrid("getSelected");
+        var truckid = item.truckid;
+        var licenseplate = item.licenseplate;
+        var trailerlicensepate = item.trailerlicensepate;
+        var voucherData = getVoucher(item);
+        if (voucherData == null) {
+            $.messager.alert('信息提示', '该车辆没有计息方式为\"' + '以欠款计算' + '\"的借款凭据,请添加新的借款凭据.', 'error');
+            return;
+        }
+        var voucherid = voucherData.voucherid;
+
+        $('#repayment-form').form('clear');
+
+        var data = {};
+        data.truckid = truckid;
+        data.voucherid = voucherid;
+        data.licenseplate = licenseplate;
+        data.trailerlicensepate = trailerlicensepate;
+        var voucherdate = dateboxFormatter(voucherData.voucherdate);
+        var dateday = voucherdate.split("-")[2];
+        var dateyear = parseInt(getNowDate().split("-")[0]);
+        var datemonth = parseInt(getNowDate().split("-")[1]);
+        data.paydate = dateyear + '-' + (datemonth < 10 ? ('0' + datemonth) : datemonth) + '-' + dateday;
+
+        $.ajax({
+            url: host + '/ssm/payLog/getPayLogByid',
+            type: 'get',
+            cache: false,
+            async: false,
+            data: {
+                truckid: data.truckid,
+                voucherid: data.voucherid,
+                paydate: dateboxFormatter(data.paydate)
+            },
+            success: function(mydd) {
+                if (mydd != "" && mydd != null) {
+                    data.id = mydd.id;
+                    data.payed = mydd.payed;
+                    data.finished = mydd.finished;
+                    data.insertdate = mydd.insertdate;
+                    data.logit = mydd.logit;
+                    data.sum = mydd.sum;
+                }
+            }
+        });
+
+        var newDate = new Date();
+        var y = newDate.getFullYear();
+        var m = newDate.getMonth() + 1;
+        var dd = newDate.getDate();
+        $("#repaymentyear").textbox('setValue', y);
+        $("#repaymentmonth").textbox('setValue', m < 10 ? ('0' + m) : m);
+        $("#repaymentday").textbox('setValue', dd < 10 ? ('0' + dd) : dd);
+
+        $('#repayment-dialog').dialog({
+            closed: false,
+            iconCls: 'icon-edit',
+            modal: true,
+            title: "车辆:" + licenseplate + "-" + trailerlicensepate + ":还款",
+            buttons: [{
+                text: '车辆还款情况',
+                iconCls: 'fa fa-search',
+                handler: function() {
+                    var repaymentSum = $('#repaymentSum').textbox('getValue');
+                    if (repaymentSum == "" || repaymentSum == 0) {
+                        $.messager.alert('信息提示', '请先查询本月还需还款的总金额后才能进行还款情况查询.', 'error');
+                        return;
+                    }
+                    var pay = $('#repaymentPay').textbox('getValue');
+                    openTruckRepaymentStatus(data, voucherData, pay);
+                }
+            }, {
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function() {
+                    addRepayment(data);
+                }
+            }, {
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function() {
+                    $('#repayment-dialog').dialog('close');
+                }
+            }]
+        });
+    }
+
+    function addRepayment(data) {
+        var repaymentSum = $('#repaymentSum').textbox('getValue');
+        if (repaymentSum == "" || repaymentSum == 0) {
+            $.messager.alert('信息提示', '请先查询本月还需还款的总金额后才能进行还款.', 'error');
+            return;
+        }
+        var allSum = repaymentSum;
+        data.sum = allSum;
+        var newDate = new Date();
+        var y = newDate.getFullYear();
+        var m = newDate.getMonth() + 1;
+        var year = parseInt($("#repaymentyear").textbox('getValue').trim());
+        var month = parseInt($("#repaymentmonth").textbox('getValue').trim());
+        var day = parseInt($("#repaymentday").textbox('getValue').trim());
+        var inputDate = year + '-' + (month < 10 ? ('0' + month) : month) + '-' + (day < 10 ? ('0' + day) : day);
+        if (year < (y - 1) || year > y) {
+            $.messager.alert('信息提示', '输入的年不正确,输入的年前后不能相差1年以上.', 'error');
+            return;
+        }
+        if (m == 1) {
+            if (month < 12 || month > 2) {
+                $.messager.alert('信息提示', '输入的月不正确,输入的月前后不能相差1月以上.', 'error');
+                return;
+            }
+        } else {
+            if (month < (m - 1) || month > m) {
+                $.messager.alert('信息提示', '输入的月不正确,输入的月前后不能相差1月以上.', 'error');
+                return;
+            }
+        }
+        if (day < 0 || day > 31) {
+            $.messager.alert('信息提示', '输入的日不正确.', 'error');
+            return;
+        }
+        data.pay = $('#repaymentPay').textbox('getValue');
+        data.remarks = inputDate;
+        $.ajax({
+            url: host + '/ssm/payLog/addPayLog',
+            type: 'post',
+            data: JSON.stringify(data),
+            cache: false,
+            async: false,
+            contentType: 'application/json',
+            success: function(d) {
+                if (d == 1) {
+                    $('#repayment-dialog').dialog('close');
+                    $.messager.alert('信息提示', '还款操作成功,可以到还款记录查询数据.', 'info');
+                } else {
+                    $.messager.alert('信息提示', '还款操作失败.', 'info');
+                }
+            },
+            error: function() {
+                console.info("addPayLog error.");
+            }
+        });
+    }
+
+    function getVoucher(item) {
+        var list = {};
+        $.ajax({
+            url: host + '/ssm/voucher/getVoucherByTruckIdAndLoanType',
+            type: 'get',
+            cache: false,
+            async: false,
+            data: {
+                truckid: item.truckid,
+                loantype: '以欠款计算'
+            },
+            success: function(data) {
+                if (data != null && data != "") {
+                    list.voucherid = data.id;
+                    list.allmoney = data.sum;
+                    list.months = data.months;
+                    list.moneyrate = data.moneyrate;
+                    list.voucherdate = data.voucherdate;
+                } else {
+                    list = null;
+                }
+            },
+            error: function() {
+                console.info("getVoucherByTruckIdAndLoanType error.");
+            }
+        });
+        return list;
+    }
+
+    function addVoucherOnTruck() {
+        var level = getLevel();
+        if (level > 3) {
+            $.messager.alert('信息提示', '您没有操作权限,请联系管理员.', 'info');
+            return;
+        }
+        $('#voucherOnTruck-form').form('clear');
+        var item = $('#dg').datagrid('getSelected');
+        if (!item) {
+            $.messager.alert('信息提示', '操作前需选中一行.', 'error');
+            return;
+        }
+
+        $('#licenseplatetextbox').textbox('setValue', item.licenseplate);
+        $('#trailerlicensepatetextbox').textbox('setValue', item.trailerlicensepate);
+
+        $('#voucherOnTruck-dialog').dialog({
+            closed: false,
+            iconCls: 'icon-add',
+            modal: true,
+            title: "新增凭据",
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function() {
+                    var data = {};
+                    var t = $('#voucherOnTruck-form').serializeArray();
+                    $.each(t, function() {
+                        data[this.name] = this.value;
+                    });
+                    data.truckid = item.truckid;
+                    $.ajax({
+                        url: host + '/ssm/voucher/addVoucher',
+                        type: "post",
+                        cache: false,
+                        async: true,
+                        data: data,
+                        success: function(data) {
+                            if (data == 0) {
+                                $.messager.alert('信息提示', '提交失败,是否车牌错误或已经存在相同计息方式的凭证！', 'error');
+                            } else {
+                                $('#voucherOnTruck-dialog').dialog('close');
+                                $.messager.alert('信息提示', '提交成功！', 'info');
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            //On error do this
+                            console.info("addVoucherOnTruck error.");
+                        }
+                    });
+                }
+            }, {
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function() {
+                    $('#voucher-dialog').dialog('close');
+                }
+            }]
+        });
+    }
+
+    function openTruckRepaymentStatus(p, v, pay) {
+        var nowDate = getNowDate();
+        var payDate = dateboxFormatter(p.paydate);
+        var days = getDays(payDate, nowDate) + 1;
+        if (days <= 0) {
+            days = 0;
+        }
+        $('#truck-status-form').form('clear');
+        var beforemonthneedpay = keepTwoDecimal(numSub(p.sum,((v.allmoney / v.months) * (1 + v.moneyrate))));
+        if (beforemonthneedpay < 0) {
+            beforemonthneedpay = 0;
+        }
+        if ((pay - beforemonthneedpay) >= 0) {
+            $('#nowznj').textbox('setValue', beforemonthneedpay * 0.0005 * days);
+        } else {
+            $('#nowznj').textbox('setValue', pay * 0.0005 * days);
+        }
+        $('#statuslicenseplatetextbox').textbox('setValue', p.licenseplate);
+        $('#statustrailerlicensepatetextbox').textbox('setValue', p.trailerlicensepate);
+        $('#beforemonthneedpay').textbox('setValue', beforemonthneedpay);
+
+        $('#thismonthneedpay').textbox('setValue', (p.sum + p.payed));
+        $('#thismonthpayed').textbox('setValue', p.payed);
+        $('#thismonthallneedpay').textbox('setValue', p.sum);
+        $('#truck-status-dialog').dialog({
+            closed: false,
+            iconCls: 'icon-file',
+            modal: true,
+            title: "车辆:" + p.licenseplate + "-" + p.trailerlicensepate + ":还款情况",
+            buttons: [{
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function() {
+                    $('#truck-status-dialog').dialog('close');
+                }
+            }]
+        });
+    }
+
+    function findtruckowner() {
+        var level = getLevel();
+        if (level > 3) {
+            $.messager.alert('信息提示', '您没有操作权限,请联系管理员.', 'info');
+            return;
+        }
+        var item = $('#dg').datagrid('getSelected');
+        if (!item) {
+            $.messager.alert('信息提示', '请先选中一行.', 'error');
+            return;
+        }
+        var truckid = item.truckid;
+        $.ajax({
+            url: host + '/ssm/truckOwner/getTruckOwner',
+            type: 'get',
+            cache: false,
+            async: false,
+            data: {
+                truckid: truckid
+            },
+            success: function(d) {
+                var len = d.length;
+                var s = "";
+                for (var i = 0; i < len; i++) {
+                    var l = d[i];
+                    var name = l.name;
+                    var phone = l.phone;
+                    var adress = l.adress;
+                    var number = l.number;
+                    s += "姓名:" + name + "|" + "电话:" + phone + "|" + "地址:" + adress + "|" + "身份证号:" + number;
+                }
+                $.messager.alert('信息提示', s, 'info');
+            },
+            error: function() {
+                console.info("getTruckOwner error.");
+            }
+        });
+    }
+
+    function addtruckowner() {
+        var level = getLevel();
+        if (level > 3) {
+            $.messager.alert('信息提示', '您没有操作权限,请联系管理员.', 'info');
+            return;
+        }
+        var item = $('#dg').datagrid('getSelected');
+        if (!item) {
+            $.messager.alert('信息提示', '请先选中一行.', 'error');
+            return;
+        }
+        $('#truckowner-form').form('clear');
+        $('#truckowner-dialog').dialog({
+            closed: false,
+            iconCls: 'icon-add',
+            modal: true,
+            title: "车辆:" + item.licenseplate + "-" + item.trailerlicensepate + ":添加车主",
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function() {
+                    addTruckOwner(item.truckid);
+                }
+            }, {
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function() {
+                    $('#truckowner-dialog').dialog('close');
+                }
+            }]
+        });
+    }
+
+    function addTruckOwner(truckid) {
+        var data = {};
+        var t = $('#truckowner-form').serializeArray();
+        $.each(t, function() {
+            data[this.name] = this.value;
+        });
+        var newData = {};
+        newData.truckid = truckid;
+        newData.name = data.truckownerName;
+        newData.phone = data.truckownerPhone;
+        newData.adress = data.truckownerAddress;
+        newData.number = data.truckownerNumber;
+        $.ajax({
+            url: host + '/ssm/truckOwner/addTruckOwner',
+            type: 'post',
+            cache: false,
+            async: false,
+            data: JSON.stringify(newData),
+            contentType: 'application/json',
+            success: function(d) {
+                if (d > 0) {
+                    $('#truckowner-dialog').dialog('close');
+                    $.messager.alert('信息提示', '添加车主成功.', 'info');
+                } else {
+                    $.messager.alert('信息提示', '添加车主失败.', 'info');
+                }
+            },
+            error: function() {
+                console.info("addTruckOwner error.");
+            }
+        });
+    }
+
+    function changeView(value){
+      if(value == "仅主车"){
+        $('#trailerlicensepate').textbox('setValue','无');
+        $('#gdrivinglicense').datebox('setValue','0000-00-00');
+        $('#goperationcertificate').datebox('setValue','0000-00-00');
+        $('#gcommercialinsurancedate').datebox('setValue','0000-00-00');
+        $('#gvin').textbox('setValue','无');
+        $('#grecorddate').datebox('setValue','0000-00-00');
+        $('#gregistrationcertificatenumber').textbox('setValue','无');
+        $('#gvehiclebrand').textbox('setValue','无');
+        $('#gtrucktype').textbox('setValue','无');
+        $('#gvehicletype').textbox('setValue','无');
+        $('#gvehiclecolor').textbox('setValue','无');
+        $('#gauthenticatedloadquality').textbox('setValue','无');
+        $('#gcurbweight').textbox('setValue','无');
+        $('#gtotalmass').textbox('setValue','无');
+        $('#grearaxle').textbox('setValue','无');
+        $('#gappearance').textbox('setValue','无');
+        $('#gcontainersize').textbox('setValue','无');
+        $('#gtyre').textbox('setValue','无');
+        // $('#gsparetire').textbox('setValue','无');
+        $('#gcommercialinsurancenumber').textbox('setValue','无');
+        $('#gcommercialinsurancecompany').textbox('setValue','无');
+        $('#gcommercialinsurancecost').textbox('setValue','无');
+        $('#gcommercialinsurancetypequota').val('无');
+        // $('#tl').hide();
+        // $('#lp').show();
+      }
+
+      if(value == "仅挂车"){
+        $('#licenseplate').textbox('setValue','无');
+        $('#drivinglicense').datebox('setValue','0000-00-00');
+        $('#operationcertificate').datebox('setValue','0000-00-00');
+        $('#compulsoryinsurancetime').datebox('setValue','0000-00-00');
+        $('#commercialinsurancetime').datebox('setValue','0000-00-00');
+        $('#vin').textbox('setValue','无');
+        $('#recorddate').datebox('setValue','0000-00-00');
+        $('#registrationcertificatenumber').textbox('setValue','无');
+        $('#enginenumber').textbox('setValue','无');
+        $('#vehiclebrand').textbox('setValue','无');
+        $('#trucktype').textbox('setValue','无');
+        $('#vehicletype').textbox('setValue','无');
+        $('#vehiclecolor').textbox('setValue','无');
+        $('#appearance').textbox('setValue','无');
+        $('#axlenumber').textbox('setValue','无');
+        $('#horsepower').textbox('setValue','无');
+        $('#enginemodel').textbox('setValue','无');
+        $('#totalmass').textbox('setValue','无');
+        $('#authenticatedloadquality').textbox('setValue','无');
+        $('#curbweight').textbox('setValue','无');
+        $('#speedratio').textbox('setValue','无');
+        $('#tyre').textbox('setValue','无');
+        $('#commercialinsurancenumber').textbox('setValue','无');
+        $('#commercialinsurancecompany').textbox('setValue','无');
+        $('#commercialinsurancecost').textbox('setValue','0');
+        $('#compulsoryinsurcancetypequota').textbox('setValue','无');
+        $('#compulsoryinsurcancenumber').textbox('setValue','无');
+        $('#compulsoryinsurancecompany').textbox('setValue','无');
+        $('#compulsoryinsurancecost').textbox('setValue','0');
+        $('#truckingcompany').textbox('setValue','无');
+        $('#commercialinsurancetypes').val('无');
+        // $('#lp').hide();
+        // $('#tl').show();
+      }
+      if(value == '主挂车'){
+        // $('#lp').show();
+        // $('#tl').show();
+      }
+    }
+
+    $(function() {
+        $('#state').combobox({
+          onSelect:function(param){
+            changeView(param.id);
+          }
+        });
+        var state = [{
+          id:"主挂车",
+          text:"主挂车"
+        },{
+          id:"仅主车",
+          text:"仅主车"
+        },{
+          id:"仅挂车",
+          text:"仅挂车"
+        }];
+        $('#state').combobox('loadData',state);
+        // $('#compulsoryinsurcancetypequota').textbox('initValue');
+        // $('#gsparetire').textbox('initValue');
+        $('#sreachCalculateSum').on('click', function() {
+            var item = $('#dg').datagrid("getSelected");
+            var truckid = item.truckid;
+            var licenseplate = item.licenseplate;
+            var trailerlicensepate = item.trailerlicensepate;
+            var voucherData = getVoucher(item);
+            if (voucherData == null) {
+                $.messager.alert('信息提示', '该车辆没有计息方式为\"' + item.terestaccrual + '\"的借款凭据,请添加新的借款凭据.', 'error');
+                return;
+            }
+            var voucherid = voucherData.voucherid;
+            var data = {};
+            data.truckid = truckid;
+            data.voucherid = voucherid;
+            data.licenseplate = licenseplate;
+            data.trailerlicensepate = trailerlicensepate;
+            data.paydate = voucherData.voucherdate;
+
+            var newDate = new Date();
+            var y = newDate.getFullYear();
+            var m = newDate.getMonth() + 1;
+
+            var year = parseInt($("#repaymentyear").textbox('getValue').trim());
+            var month = parseInt($("#repaymentmonth").textbox('getValue').trim());
+            var day = parseInt($("#repaymentday").textbox('getValue').trim());
+            var inputDate = year + '-' + (month < 10 ? ('0' + month) : month) + '-' + (day < 10 ? ('0' + day) : day);
+            if (year < (y - 1) || year > y) {
+                $.messager.alert('信息提示', '输入的年不正确,输入的年前后不能相差1年以上.', 'error');
+                return;
+            }
+            if (m == 1) {
+                if (month < 12 || month > 2) {
+                    $.messager.alert('信息提示', '输入的月不正确,输入的月前后不能相差1月以上.', 'error');
+                    return;
+                }
+            } else {
+                if (month < (m - 1) || month > m) {
+                    $.messager.alert('信息提示', '输入的月不正确,输入的月前后不能相差1月以上.', 'error');
+                    return;
+                }
+            }
+            if (day < 0 || day > 31) {
+                $.messager.alert('信息提示', '输入的日不正确.', 'error');
+                return;
+            }
+            var repaymentPay = $('#repaymentPay').textbox('getValue');
+            if (repaymentPay == "") {
+                $.messager.alert('信息提示', '请输入本次还款金额.', 'error');
+                return;
+            }
+            $.ajax({
+                url: host + '/ssm/payLog/calculateSum',
+                type: 'get',
+                cache: false,
+                async: false,
+                data: {
+                    truckid: truckid,
+                    voucherid: voucherid,
+                    nowdate: inputDate,
+                    voucherdate: dateboxFormatter(data.paydate),
+                    allmoney: voucherData.allmoney,
+                    months: voucherData.months,
+                    moneyrate: voucherData.moneyrate,
+                    repaymentPay: repaymentPay
+                },
+                success: function(d) {
+                    if (d.code == 20000) {
+                        data.p = d.result.p;
+                        data.sum = data.p.sum;
+                    }else{
+                      $.messager.alert('信息提示', '本月已进行结算,该查询本月暂不可用.', 'info');
+                    }
+                },
+                error: function() {
+                    console.info("calculateSum error.");
+                }
+            });
+
+            $('#repaymentSum').textbox('setValue', data.sum);
+        });
+    });
+
+</script>
+<script type="text/javascript" src="script/truck.js"></script>
+<script type="text/javascript" src="script/truckLoan.js"></script>
+<script type="text/javascript" src="script/repay.js"></script>

@@ -1,0 +1,99 @@
+<!--此文件为tabs-content基础布局实现,请参考此文档结构添加新的碎片页面, wuwz@live.com-->
+<!--此处可以引入除基础js以外的其他js插件以及css样式文件-->
+<div class="easyui-tabs-content">
+
+	<div class="search-box easyui-panel" data-options="title:'查询条件'">
+		<input class="easyui-textbox" id="licenseplate2" name="licenseplate2" data-options="prompt:'主车牌'" />
+		<input class="easyui-textbox" id="trailerlicensepate2" name="trailerlicensepate2" data-options="prompt:'挂车牌'" />
+		<a class="easyui-linkbutton" href="javascript:void(0)" onclick="searchRepayment()"><i class="fa fa-search"></i> 查询</a>
+		<a class="easyui-linkbutton" href="javascript:void(0)" onclick="resetRepayment()"><i class="fa fa-rotate-left"></i> 重置</a>
+	</div>
+	<div class="datagrid-content">
+		<table class="easyui-datagrid-repayment">
+			<thead data-options="frozen:true">
+        <tr>
+          <th data-options="field: 'ck', width: 80, checkbox: true"></th>
+        </tr>
+      </thead>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+		$('.easyui-datagrid-repayment').datagrid({
+			title: '还款记录',
+      iconCls:'icon-file',
+			fit:true,
+      rownumbers:true,
+			singleSelect:true,
+			collapsible:true,
+			url:host + '/ssm/repay/repayList',
+			method:'get',
+			fitColumns: true,
+			pagination: true,
+			columns: [ [
+				{field: 'id',title: '还款记录编号',width:80,hidden:true},
+        {field: 'truckid',title: '车辆编号',width:80,hidden:true},
+				{field: 'voucherid',title: '凭据编号',width:80,hidden:true},
+        {field: 'licenseplate',title: '主车牌',width:80},
+        {field: 'trailerlicensepate',title: '挂车牌',width:80},
+        {field: 'paydate',title: '还款日期',width:80,
+          formatter:function(date){
+            return dateboxFormatter(date);
+          }
+        },
+        {field: 'sum',title: '当月当前还需还款总金额(元)',width:80},
+				{field: 'pay',title: '本次还款金额(元)',width:80},
+        {field: 'finished',title: '是否还完本月欠款',width:80,
+					formatter:function(value){
+						if(value){
+							return '是';
+						}else{
+							return '否';
+						}
+					}
+			  },
+        {field: 'insertdate',title: '保存日期',width:80,
+				formatter:function(date){
+					return dateboxFormatter(date);
+				}},
+        {field: 'remarks',title: '备注',width:250}
+			] ],
+			toolbar: [
+				{text: '重载',iconCls:'icon-reload',handler:function(){ $('.easyui-datagrid-repayment').datagrid('reload'); }},
+			]
+		});
+
+		function resetRepayment(){
+			$("#licenseplate2").textbox('clear');
+      $("#trailerlicensepate2").textbox('clear');
+		}
+
+
+		function searchRepayment(){
+			var licensePlate = $("#licenseplate2").textbox("getValue");
+      var trailerLicensePate = $("#trailerlicensepate2").textbox("getValue");
+      var options = $(".easyui-datagrid-repayment" ).datagrid("getPager").data("pagination" ).options;
+      var page = options.pageNumber;
+      var rows = options.pageSize;
+      $.ajax({
+        url:host+'/ssm/repay/repayList',
+        type:'get',
+        cache:false,
+        async:false,
+        data:{
+          licensePlate:licensePlate,
+          trailerLicensePate:trailerLicensePate,
+          page:page,
+          rows:rows
+        },
+        success:function(data){
+          console.info("searchRepayment success.");
+          $('.easyui-datagrid-repayment').datagrid('loadData',data);
+        },
+        error:function(xhr, ajaxOptions, thrownError){
+          console.info("searchRepayment fall.");
+        }
+      });
+		}
+	</script>
+</div>
